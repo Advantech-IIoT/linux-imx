@@ -1,6 +1,10 @@
 # SPDX-License-Identifier: GPL-2.0
 
 # required for overlay support
+ifdef CONFIG_ARCH_ADV
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-evk.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-adv-eamb9918-a1.dtb
+else
 DTC_FLAGS_fsl-ls1028a-qds := -@
 DTC_FLAGS_fsl-ls1028a-qds-13bb := -@
 DTC_FLAGS_fsl-ls1028a-qds-65bb := -@
@@ -163,3 +167,4 @@ dtb-$(CONFIG_ARCH_MXC) += imx8dxl-evk.dtb imx8dxl-evk-rpmsg.dtb \
 			  imx8dxl-evk-root.dtb imx8dxl-evk-inmate.dtb
 dtb-$(CONFIG_ARCH_S32) += s32v234-evb.dtb \
 			  s32v234-sbc.dtb
+endif
