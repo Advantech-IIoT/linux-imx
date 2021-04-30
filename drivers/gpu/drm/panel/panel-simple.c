@@ -3884,15 +3884,107 @@ static const struct panel_desc_dsi osd101t2045_53ts = {
 };
 
 #ifdef CONFIG_ARCH_ADV
+static const struct drm_display_mode inno_tdm07040ws_mode = {
+	.clock = 51200,
+	.hdisplay = 1024,
+	.hsync_start = 1024 + 160,
+	.hsync_end = 1024 + 160 + 40,
+	.htotal = 1024 + 320,
+	.vdisplay = 600,
+	.vsync_start = 600 + 20,
+	.vsync_end = 600 + 20 + 5,
+	.vtotal = 600 + 35,
+	.vrefresh = 60,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+};
+
+static const struct panel_desc_dsi innolux_tdm07040ws = {
+	.desc = {
+		.modes = &inno_tdm07040ws_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 154,
+			.height = 91,
+		},
+		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_EOT_PACKET,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
+
+static const struct drm_display_mode inno_g101ice_mode = {
+	.clock = 71100,
+	.hdisplay = 1280,
+	.hsync_start = 1280 + 70,
+	.hsync_end = 1280 + 70 + 30,
+	.htotal = 1280 + 160,
+	.vdisplay = 800,
+	.vsync_start = 800 + 11,
+	.vsync_end = 800 + 11 + 4,
+	.vtotal = 800 + 33,
+	.vrefresh = 60,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+};
+
+static const struct panel_desc_dsi innolux_g101ice = {
+	.desc = {
+		.modes = &inno_g101ice_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 216,
+			.height = 135,
+		},
+		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_EOT_PACKET,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
+
+static const struct drm_display_mode inno_g156hce_mode = {
+	.clock = 70930,
+	.hdisplay = 1920,
+	.hsync_start = 1920 + 100,
+	.hsync_end = 1920 + 100 + 30,
+	.htotal = 1920 + 210,
+	.vdisplay = 1080,
+	.vsync_start = 1080 + 16,
+	.vsync_end = 1080 + 16 + 4,
+	.vtotal = 1080 + 30,
+	.vrefresh = 60,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+};
+
+static const struct panel_desc_dsi innolux_g156hce = {
+	.desc = {
+		.modes = &inno_g156hce_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 344,
+			.height = 193,
+		},
+		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_EOT_PACKET,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
 static const struct drm_display_mode inno_g156bge_mode = {
 	.clock = 76000,
 	.hdisplay = 1366,
-	.hsync_start = 1366 + 150,
-	.hsync_end = 1920 + 150 + 20,
-	.htotal = 1920 + 194,
+	.hsync_start = 1366 + 90,
+	.hsync_end = 1366 + 90 + 24,
+	.htotal = 1366 + 194,
 	.vdisplay = 768,
-	.vsync_start = 768 + 4,
-	.vsync_end = 768 + 4 + 8,
+	.vsync_start = 768 + 20,
+	.vsync_end = 768 + 20 + 8,
 	.vtotal = 768 + 38,
 	.vrefresh = 60,
 	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
@@ -3941,6 +4033,15 @@ static const struct of_device_id dsi_of_match[] = {
 #ifdef CONFIG_ARCH_ADV
 		.compatible = "inno,g156bge",
 		.data = &innolux_g156bge
+	}, {
+		.compatible = "inno,g156hce",
+		.data = &innolux_g156hce
+	}, {
+		.compatible = "inno,g101ice",
+		.data = &innolux_g101ice
+	}, {
+		.compatible = "inno,tdm07040ws",
+		.data = &innolux_tdm07040ws
 	}, {
 #endif
 		/* sentinel */

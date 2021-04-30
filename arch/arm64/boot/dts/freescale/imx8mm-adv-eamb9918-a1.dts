@@ -117,6 +117,22 @@
 			100>;
 		default-brightness-level = <80>;
 	};
+
+	/*
+	* gpio export to sysfs.
+	*/
+	gpio_export {
+		compatible = "adv,gpio_export";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_gpioexport_0>;
+		count = <4>;	//gpio counts
+		status = "okay";
+
+		gpio-0 = <&gpio3 20 1>;
+		gpio-1 = <&gpio3 21 1>;
+		gpio-2 = <&gpio3 22 1>;
+		gpio-3 = <&gpio1 0 1>;
+	};
 };
 
 /*
@@ -153,25 +169,26 @@
 	status = "okay";
 };
 
-/*
+/*******************************************
 * USB:
 * usbotg1 as otg device.
 * usbotg2 as host.
 * this is enabled in imx8mm-advantech.dtsi
-*/
+******************************************/
 
 
-/*
+/**************************************
 * UART:
 * uart1& uart3 as rs485.
 * uart2 as console, and has enabled.
 * uart4 as rs232
-*/
+**************************************/
 &uart1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart1>;
 
 	fsl,uart-has-rtscts;
+	rs485-rts-delay = <0 200>;
 	status = "okay";
 };
 
@@ -180,6 +197,8 @@
 	pinctrl-0 = <&pinctrl_uart3>;
 
 	fsl,uart-has-rtscts;
+	linux,rs485-enabled-at-boot-time;		/* cts as de pin */
+	rs485-rts-delay = <0 200>;              // in milliseconds
 	status = "okay";
 };
 
@@ -280,20 +299,7 @@
 };
 
 &spdif1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_spdif1>;
-	assigned-clocks = <&clk IMX8MM_CLK_SPDIF1>;
-	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
-	assigned-clock-rates = <24576000>;
-	clocks = <&clk IMX8MM_CLK_AUDIO_AHB>, <&clk IMX8MM_CLK_24M>,
-		<&clk IMX8MM_CLK_SPDIF1>, <&clk IMX8MM_CLK_DUMMY>,
-		<&clk IMX8MM_CLK_DUMMY>, <&clk IMX8MM_CLK_DUMMY>,
-		<&clk IMX8MM_CLK_AUDIO_AHB>, <&clk IMX8MM_CLK_DUMMY>,
-		<&clk IMX8MM_CLK_DUMMY>, <&clk IMX8MM_CLK_DUMMY>,
-		<&clk IMX8MM_AUDIO_PLL1_OUT>, <&clk IMX8MM_AUDIO_PLL2_OUT>;
-	clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3",
-		"rxtx4", "rxtx5", "rxtx6", "rxtx7", "spba", "pll8k", "pll11k";
-	status = "okay";
+	status = "disabled";
 };
 
 &micfil {
@@ -443,9 +449,7 @@
 	pinctrl_sai2: sai2grp {
 		fsl,pins = <
 			MX8MM_IOMUXC_SAI2_TXC_SAI2_TX_BCLK      0xd6
-			MX8MM_IOMUXC_SAI2_TXFS_SAI2_TX_SYNC     0xd6
 			MX8MM_IOMUXC_SAI2_TXD0_SAI2_TX_DATA0    0xd6
-			MX8MM_IOMUXC_SAI2_RXD0_SAI2_RX_DATA0    0xd6
 		>;
 	};
 
@@ -486,9 +490,6 @@
 	pinctrl_sai5: sai5grp {
 		fsl,pins = <
 			MX8MM_IOMUXC_SAI5_MCLK_SAI5_MCLK	0xd6
-			MX8MM_IOMUXC_SAI5_RXC_SAI5_RX_BCLK	0xd6
-			MX8MM_IOMUXC_SAI5_RXD0_SAI5_RX_DATA0	0xd6
-			MX8MM_IOMUXC_SAI5_RXD1_SAI5_RX_DATA1    0xd6
 			MX8MM_IOMUXC_SAI5_RXD2_SAI5_RX_DATA2    0xd6
 			MX8MM_IOMUXC_SAI5_RXD3_SAI5_RX_DATA3    0xd6
 		>;
@@ -497,9 +498,6 @@
 	pinctrl_pdm: pdmgrp {
 		fsl,pins = <
 			MX8MM_IOMUXC_SAI5_MCLK_SAI5_MCLK	0xd6
-			MX8MM_IOMUXC_SAI5_RXC_PDM_CLK		0xd6
-			MX8MM_IOMUXC_SAI5_RXD0_PDM_DATA0	0xd6
-			MX8MM_IOMUXC_SAI5_RXD1_PDM_DATA1	0xd6
 		>;
 	};
 
@@ -581,7 +579,6 @@
 
 	pinctrl_wlan: wlangrp {
 		fsl,pins = <
-			MX8MM_IOMUXC_GPIO1_IO00_ANAMIX_REF_CLK_32K	0x141
 			MX8MM_IOMUXC_SD1_DATA7_GPIO2_IO9		0x111
 		>;
 	};
@@ -609,6 +606,15 @@
 		fsl,pins = <
 			MX8MM_IOMUXC_SAI5_RXD2_GPIO3_IO23	0x19	/* LVDS_STBY */
 			MX8MM_IOMUXC_SAI5_RXD3_GPIO3_IO24	0x19	/* LVDS_RESET */
+		>;
+	};
+
+	pinctrl_gpioexport_0: gpioexport_bklgrp-0 {
+		fsl,pins = <
+			MX8MM_IOMUXC_SAI5_RXD0_GPIO3_IO21	0x19		/* COM_MODE_0 */
+			MX8MM_IOMUXC_SAI5_RXD1_GPIO3_IO22	0x19		/* COM_MODE_1 */
+			MX8MM_IOMUXC_SAI5_RXC_GPIO3_IO20	0x19		/* COM_TERM */
+			MX8MM_IOMUXC_GPIO1_IO00_GPIO1_IO0	0x19		/* COM_SLEW */
 		>;
 	};
 };
