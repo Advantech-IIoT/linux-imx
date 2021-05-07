@@ -125,13 +125,24 @@
 		compatible = "adv,gpio_export";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_gpioexport_0>;
-		count = <4>;	//gpio counts
+		#address-cells = <1>; 
+		#size-cells = <1>;
+		adv,export-gpio-use-number;
+		gpio_counts = <12>;	//gpio counts
 		status = "okay";
 
-		gpio-0 = <&gpio3 20 1>;
-		gpio-1 = <&gpio3 21 1>;
-		gpio-2 = <&gpio3 22 1>;
-		gpio-3 = <&gpio1 0 1>;
+		gpio-0 = <84 1>;
+		gpio-1 = <85 1>;
+		gpio-2 = <86 1>;
+		gpio-3 = <0 1>;
+		gpio-4 = <504 0>;
+		gpio-5 = <505 0>;
+		gpio-6 = <506 0>;
+		gpio-7 = <507 0>;
+		gpio-8 = <508 0>;
+		gpio-9 = <509 0>;
+		gpio-10 = <510 0>;
+		gpio-11 = <511 0>;
 	};
 };
 
@@ -231,10 +242,39 @@
 
 &i2c3 {
 	status = "okay";
+
+	/* gpio controller without intterupt. */
+	ext_gpio: tca9538@73 {
+		compatible = "ti,tca6408";
+		reg = <0x73>;
+		gpio-controller;
+		#gpio-cells = <2>;
+	};
 };
 
 &i2c4 {
 	status = "okay";
+};
+
+/*
+* ecspi2
+* with one spi fram.
+*/
+&ecspi2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_ecspi2>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+	fsl,spi-num-chipselects = <1>;	
+	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
+	status = "okay";
+
+	fram: fm25v10@0 {
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		spi-max-frequency = <40000000>;
+		status = "okay";
+	};
 };
 
 &csi1_bridge {
@@ -615,6 +655,15 @@
 			MX8MM_IOMUXC_SAI5_RXD1_GPIO3_IO22	0x19		/* COM_MODE_1 */
 			MX8MM_IOMUXC_SAI5_RXC_GPIO3_IO20	0x19		/* COM_TERM */
 			MX8MM_IOMUXC_GPIO1_IO00_GPIO1_IO0	0x19		/* COM_SLEW */
+		>;
+	};
+
+	pinctrl_ecspi2: ecspi2grp {
+		fsl,pins = <
+			MX8MM_IOMUXC_ECSPI2_SCLK_ECSPI2_SCLK           0x82
+			MX8MM_IOMUXC_ECSPI2_MISO_ECSPI2_MISO           0x82
+			MX8MM_IOMUXC_ECSPI2_MOSI_ECSPI2_MOSI           0x82
+			MX8MM_IOMUXC_ECSPI2_SS0_GPIO5_IO13			   0x19
 		>;
 	};
 };
