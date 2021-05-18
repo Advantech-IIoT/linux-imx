@@ -414,11 +414,6 @@
 */
 &pwm4 {
 	status = "okay";
-	/* 
-	* Notice, this pwm driver can't load
-    * pinctrl settings.so you should add it
-	* in backlight node.
-	*/
 };
 
 &pwm2 {
