@@ -3916,17 +3916,16 @@ static const struct panel_desc_dsi innolux_tdm07040ws = {
 
 
 static const struct drm_display_mode inno_g101ice_mode = {
-	.clock = 88300,
+	.clock = 73000,
 	.hdisplay = 1280,
 	.hsync_start = 1280 + 70,
 	.hsync_end = 1280 + 70 + 30,
 	.htotal = 1280 + 160,
 	.vdisplay = 800,
-	.vsync_start = 800 + 8,
-	.vsync_end = 800 + 8 + 4,
+	.vsync_start = 800 + 11,
+	.vsync_end = 800 + 11 + 4,
 	.vtotal = 800 + 23,
 	.vrefresh = 60,
-	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
 };
 
 static const struct panel_desc_dsi innolux_g101ice = {
@@ -3947,14 +3946,14 @@ static const struct panel_desc_dsi innolux_g101ice = {
 
 
 static const struct drm_display_mode inno_g156hce_mode = {
-	.clock = 141000,
+	.clock = 168000,
 	.hdisplay = 1920,
 	.hsync_start = 1920 + 100,
 	.hsync_end = 1920 + 100 + 30,
 	.htotal = 1920 + 210,
 	.vdisplay = 1080,
-	.vsync_start = 1080 + 16,
-	.vsync_end = 1080 + 16 + 4,
+	.vsync_start = 1080 + 18,
+	.vsync_end = 1080 + 18 + 4,
 	.vtotal = 1080 + 30,
 	.vrefresh = 60,
 	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
