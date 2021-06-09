@@ -3946,7 +3946,7 @@ static const struct panel_desc_dsi innolux_g101ice = {
 
 
 static const struct drm_display_mode inno_g156hce_mode = {
-	.clock = 168000,
+	.clock = 142000,
 	.hdisplay = 1920,
 	.hsync_start = 1920 + 100,
 	.hsync_end = 1920 + 100 + 30,

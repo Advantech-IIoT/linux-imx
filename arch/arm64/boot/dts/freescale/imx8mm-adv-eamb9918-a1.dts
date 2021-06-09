@@ -75,7 +75,7 @@
 
 /***********************************************************
 * uSDHC:
-* usdhc1 as sdio.
+* usdhc1 as sdio to connect Wifi/Bt.
 * usdhc2 connect to sdcard.
 * usdhc3 connect to emmc flash.
 * usdhc2 & usdhc3 has enabled in imx8mm-advantech.dtsi
@@ -91,7 +91,7 @@
 	keep-power-in-suspend;
 	non-removable;
 	mmc-pwrseq = <&usdhc1_pwrseq>;
-	status = "disabled";
+	status = "okay";
 };
 
 /***************************************
@@ -204,14 +204,14 @@
 	pinctrl-0 = <&pinctrl_ecspi2>;
 	#address-cells = <1>;
 	#size-cells = <0>;
-	fsl,spi-num-chipselects = <1>;	
+	fsl,spi-num-chipselects = <1>;
 	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
 	status = "okay";
 
 	fram: fm25v10@0 {
-		compatible = "jedec,spi-nor";
+		compatible = "cypress,fm25";
 		reg = <0>;
-		spi-max-frequency = <40000000>;
+		spi-max-frequency = <20000000>;
 		status = "okay";
 	};
 };
@@ -386,7 +386,8 @@
 
 	pinctrl_wlan: wlangrp {
 		fsl,pins = <
-			MX8MM_IOMUXC_SD1_DATA7_GPIO2_IO9		0x111
+			MX8MM_IOMUXC_GPIO1_IO01_GPIO1_IO1		0x111
+			MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x111
 		>;
 	};
 
