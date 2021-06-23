@@ -18,6 +18,21 @@
 		reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
 	};
 
+	/************************
+	* LVDS backlight power.
+	************************/
+	reg_bkl_vbl: regulator-bkl {
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_reg_bkl_vbl>;
+		regulator-name = "VDD_BKL";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
+		startup-delay-us = <10000>;
+		enable-active-high;
+	};
+
 	/*****************
 	* LVDS backlight.
 	*****************/
@@ -25,9 +40,8 @@
 		compatible = "pwm-backlight";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_bkl0>,<&pinctrl_lvds>;
-
-		enable-gpios = <&gpio4 29 0>;
-		post-pwm-on-delay-ms = <10>;
+		power-supply = <&reg_bkl_vbl>;
+		pwm-off-delay-ms = <10>;
 		status = "okay";
 
 		pwms = <&pwm4 0 1000000 0>;
@@ -391,10 +405,15 @@
 		>;
 	};
 
+	pinctrl_reg_bkl_vbl: reg_bkl_vbl {
+		fsl,pins = <
+			MX8MM_IOMUXC_SAI3_RXC_GPIO4_IO29	0x19		/* LCD0_BKLT_EN */
+		>;
+	};
+
 	pinctrl_bkl0: bkl0_grp {
 		fsl,pins = <
 			MX8MM_IOMUXC_SAI3_MCLK_PWM4_OUT     0x06		 /* LCD0_BKLT_PWM */
-			MX8MM_IOMUXC_SAI3_RXC_GPIO4_IO29	0x19		/* LCD0_BKLT_EN */
 		>;
 	};
 

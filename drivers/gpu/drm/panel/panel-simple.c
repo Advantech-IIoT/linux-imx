@@ -597,11 +597,6 @@ static int panel_simple_probe(struct device *dev, const struct panel_desc *desc)
 		return err;
 	}
 
-#ifdef CONFIG_ARCH_ADV
-	of_property_read_u32(dev->of_node, "power-on-delay", &desc->delay.prepare);
-	of_property_read_u32(dev->of_node, "bkl-prepare-on-delay", &desc->delay.enable);
-#endif
-
 	backlight = of_parse_phandle(dev->of_node, "backlight", 0);
 	if (backlight) {
 		panel->backlight = of_find_backlight_by_node(backlight);
@@ -3907,6 +3902,12 @@ static const struct panel_desc_dsi innolux_tdm07040ws = {
 			.width = 154,
 			.height = 91,
 		},
+		.delay = {
+			.prepare = 20,
+			.enable = 200,
+			.disable = 200,
+			.unprepare = 500,
+		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 	},
 	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_EOT_PACKET,
@@ -3936,6 +3937,12 @@ static const struct panel_desc_dsi innolux_g101ice = {
 		.size = {
 			.width = 216,
 			.height = 135,
+		},
+		.delay = {
+			.prepare = 20,
+			.enable = 200,
+			.disable = 200,
+			.unprepare = 500,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 	},
@@ -3968,6 +3975,12 @@ static const struct panel_desc_dsi innolux_g156hce = {
 			.width = 344,
 			.height = 193,
 		},
+		.delay = {
+			.prepare = 20,
+			.enable = 450,
+			.disable = 200,
+			.unprepare = 500,
+		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 	},
 	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_EOT_PACKET,
@@ -3997,6 +4010,12 @@ static const struct panel_desc_dsi innolux_g156bge = {
 		.size = {
 			.width = 344,
 			.height = 193,
+		},
+		.delay = {
+			.prepare = 20,
+			.enable = 200,
+			.disable = 200,
+			.unprepare = 500,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 	},
