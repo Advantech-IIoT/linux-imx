@@ -3946,15 +3946,15 @@ static const struct panel_desc_dsi innolux_g101ice = {
 
 
 static const struct drm_display_mode inno_g156hce_mode = {
-	.clock = 142000,
+	.clock = 150000,
 	.hdisplay = 1920,
-	.hsync_start = 1920 + 100,
-	.hsync_end = 1920 + 100 + 30,
-	.htotal = 1920 + 210,
+	.hsync_start = 1920 + 110,
+	.hsync_end = 1920 + 110 + 40,
+	.htotal = 1920 + 230,
 	.vdisplay = 1080,
-	.vsync_start = 1080 + 18,
-	.vsync_end = 1080 + 18 + 4,
-	.vtotal = 1080 + 30,
+	.vsync_start = 1080 + 35,
+	.vsync_end = 1080 + 35 + 5,
+	.vtotal = 1080 + 50,
 	.vrefresh = 60,
 	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
 };
