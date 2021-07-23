@@ -403,12 +403,20 @@ static int panel_simple_unprepare(struct drm_panel *panel)
 	if (!p->prepared)
 		return 0;
 
+#ifdef CONFIG_ARCH_ADV
+	if (p->desc->delay.unprepare)
+		msleep(p->desc->delay.unprepare);
+
+	gpiod_set_value_cansleep(p->enable_gpio, 0);
+	regulator_disable(p->supply);
+#else
 	gpiod_set_value_cansleep(p->enable_gpio, 0);
 
 	regulator_disable(p->supply);
 
 	if (p->desc->delay.unprepare)
 		msleep(p->desc->delay.unprepare);
+#endif
 
 	p->prepared = false;
 
@@ -451,9 +459,6 @@ static int panel_simple_enable(struct drm_panel *panel)
 	if (p->enabled)
 		return 0;
 
-	if (p->desc->delay.enable)
-		msleep(p->desc->delay.enable);
-
 #ifdef CONFIG_ARCH_ADV
 	if (p->on_cmds) {
 		err = panel_simple_dsi_send_cmds(p, p->on_cmds);
@@ -461,6 +466,9 @@ static int panel_simple_enable(struct drm_panel *panel)
 			dev_err(p->dev, "failed to send on cmds\n");
 	}
 #endif
+
+	if (p->desc->delay.enable)
+		msleep(p->desc->delay.enable);
 
 	if (p->backlight) {
 		p->backlight->props.state &= ~BL_CORE_FBBLANK;
@@ -3903,7 +3911,7 @@ static const struct panel_desc_dsi innolux_tdm07040ws = {
 			.height = 91,
 		},
 		.delay = {
-			.prepare = 20,
+			.prepare = 100,
 			.enable = 200,
 			.disable = 200,
 			.unprepare = 500,
@@ -3939,7 +3947,7 @@ static const struct panel_desc_dsi innolux_g101ice = {
 			.height = 135,
 		},
 		.delay = {
-			.prepare = 20,
+			.prepare = 10,
 			.enable = 200,
 			.disable = 200,
 			.unprepare = 500,
@@ -3976,7 +3984,7 @@ static const struct panel_desc_dsi innolux_g156hce = {
 			.height = 193,
 		},
 		.delay = {
-			.prepare = 20,
+			.prepare = 10,
 			.enable = 450,
 			.disable = 200,
 			.unprepare = 500,
@@ -4012,7 +4020,7 @@ static const struct panel_desc_dsi innolux_g156bge = {
 			.height = 193,
 		},
 		.delay = {
-			.prepare = 20,
+			.prepare = 10,
 			.enable = 200,
 			.disable = 200,
 			.unprepare = 500,
