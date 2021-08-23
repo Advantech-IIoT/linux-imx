@@ -28,8 +28,22 @@
 		regulator-name = "VDD_BKL";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
-		startup-delay-us = <10000>;
+		gpio = <&gpio4 26 GPIO_ACTIVE_HIGH>;
+		startup-delay-us = <300000>;
+		enable-active-high;
+	};
+
+	/************************
+	* LVDS VDD power.
+	************************/
+	lcd_vdd_reg: regulator_lcd_vdd {
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_lcd0>;
+		regulator-name = "LCD_VDD";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio4 30 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 	};
 
@@ -39,8 +53,10 @@
 	lvds_backlight0: lvds_backlight@0 {
 		compatible = "pwm-backlight";
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_bkl0>,<&pinctrl_lvds>;
+		pinctrl-0 = <&pinctrl_bkl0>;
 		power-supply = <&reg_bkl_vbl>;
+		enable-gpios = <&gpio4 29 GPIO_ACTIVE_HIGH>;  /* BKL_EN */
+		post-pwm-on-delay-ms = <10>;
 		pwm-off-delay-ms = <10>;
 		status = "okay";
 
@@ -261,10 +277,11 @@
 	panel@0 {
 		compatible = "inno,g156bge";
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_lcd0>;
+		pinctrl-0 = <&pinctrl_lvds>;
 
 		reg = <0>;
-		enable-gpios = <&gpio4 30 0>;
+		power-supply = <&lcd_vdd_reg>;
+		enable-gpios = <&gpio3 23 GPIO_ACTIVE_HIGH>;  /* We use STBY as enable TC358775XBG */
 		power-on-delay = <10>;
 		bkl-prepare-on-delay = <200>;
 		backlight=<&lvds_backlight0>;
@@ -407,12 +424,13 @@
 
 	pinctrl_reg_bkl_vbl: reg_bkl_vbl {
 		fsl,pins = <
-			MX8MM_IOMUXC_SAI3_RXC_GPIO4_IO29	0x19		/* LCD0_BKLT_EN */
+			MX8MM_IOMUXC_SAI2_TXD0_GPIO4_IO26	0x19		/* BKLT_VDD_EN */
 		>;
 	};
 
 	pinctrl_bkl0: bkl0_grp {
 		fsl,pins = <
+			MX8MM_IOMUXC_SAI3_RXC_GPIO4_IO29	0x19		/* LCD0_BKLT_EN */
 			MX8MM_IOMUXC_SAI3_MCLK_PWM4_OUT     0x06		 /* LCD0_BKLT_PWM */
 		>;
 	};

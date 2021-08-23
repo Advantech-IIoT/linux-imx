@@ -404,10 +404,11 @@ static int panel_simple_unprepare(struct drm_panel *panel)
 		return 0;
 
 #ifdef CONFIG_ARCH_ADV
+	gpiod_set_value_cansleep(p->enable_gpio, 0);
+
 	if (p->desc->delay.unprepare)
 		msleep(p->desc->delay.unprepare);
 
-	gpiod_set_value_cansleep(p->enable_gpio, 0);
 	regulator_disable(p->supply);
 #else
 	gpiod_set_value_cansleep(p->enable_gpio, 0);
@@ -3913,8 +3914,8 @@ static const struct panel_desc_dsi innolux_tdm07040ws = {
 		.delay = {
 			.prepare = 100,
 			.enable = 200,
-			.disable = 200,
-			.unprepare = 500,
+			.disable = 198,
+			.unprepare = 200,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 	},
@@ -3949,8 +3950,8 @@ static const struct panel_desc_dsi innolux_g101ice = {
 		.delay = {
 			.prepare = 10,
 			.enable = 200,
-			.disable = 200,
-			.unprepare = 500,
+			.disable = 198,
+			.unprepare = 10,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 	},
@@ -3986,8 +3987,8 @@ static const struct panel_desc_dsi innolux_g156hce = {
 		.delay = {
 			.prepare = 10,
 			.enable = 450,
-			.disable = 200,
-			.unprepare = 500,
+			.disable = 198,
+			.unprepare = 10,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 	},
@@ -4022,8 +4023,8 @@ static const struct panel_desc_dsi innolux_g156bge = {
 		.delay = {
 			.prepare = 10,
 			.enable = 200,
-			.disable = 200,
-			.unprepare = 500,
+			.disable = 198,
+			.unprepare = 10,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 	},
