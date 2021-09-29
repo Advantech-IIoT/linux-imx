@@ -56,7 +56,6 @@
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		gpio = <&gpio1 12 GPIO_ACTIVE_LOW>;
-		enable-active-high;
 	};
 
 	/* Fixed pcie clock. */
@@ -428,10 +427,7 @@
 	srp-disable;
 	adp-disable;
 	disable-over-current;
-	usb-role-switch;
 	vbus-supply = <&reg_usb_otg1_vbus>;
-	picophy,pre-emp-curr-control = <3>;
-	picophy,dc-vol-level-adjust = <7>;
 	status = "okay";
 };
 
