@@ -85,21 +85,13 @@
 		#address-cells = <1>; 
 		#size-cells = <1>;
 		adv,export-gpio-use-number;
-		gpio_counts = <12>;	//gpio counts
+		gpio_counts = <4>;	//gpio counts
 		status = "okay";
 
 		gpio-0 = <84 1>;
 		gpio-1 = <85 1>;
 		gpio-2 = <86 1>;
 		gpio-3 = <0 1>;
-		gpio-4 = <504 0>;
-		gpio-5 = <505 0>;
-		gpio-6 = <506 0>;
-		gpio-7 = <507 0>;
-		gpio-8 = <508 0>;
-		gpio-9 = <509 0>;
-		gpio-10 = <510 0>;
-		gpio-11 = <511 0>;
 	};
 };
 
@@ -209,6 +201,7 @@
 		reg = <0x73>;
 		gpio-controller;
 		#gpio-cells = <2>;
+		status = "disabled";
 	};
 };
 
