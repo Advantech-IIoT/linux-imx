@@ -74,6 +74,21 @@
 };
 
 /*
+* CPU thermal-zones.
+*/
+&cpu_alert0 {
+	temperature = <100000>;
+	hysteresis = <2000>;
+	type = "passive";
+};
+
+&cpu_crit0 {
+	temperature = <103000>;
+	hysteresis = <2000>;
+	type = "critical";
+};
+
+/*
 * SVNS ONOFF button.
 * power button.
 */
