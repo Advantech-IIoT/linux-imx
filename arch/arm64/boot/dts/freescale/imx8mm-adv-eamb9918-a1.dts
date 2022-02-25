@@ -233,11 +233,16 @@
 &ecspi3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi3>;
-	cs-gpios = <&gpio5 25 0>;
+	/delete-property/ dmas;
+	/delete-property/ dma-names;
+	fsl,spi-num-chipselects = <1>;
+	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
+	#address-cells = <1>;
+	#size-cells = <0>;
 	status = "okay";
 
 	tpm_spi_tis@0 {
-		compatible = "tcg,tpm_tis-spi";
+		compatible = "infineon,slb9670";
 		reg = <0>;
 		spi-max-frequency = <20000000>;
 		status = "okay";
