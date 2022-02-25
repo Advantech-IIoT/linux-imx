@@ -233,6 +233,8 @@
 &ecspi3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi3>;
+	/delete-property/ dmas;
+	/delete-property/ dma-names;
 	#address-cells = <1>;
 	#size-cells = <0>;
 	fsl,spi-num-chipselects = <1>;
