@@ -3888,6 +3888,42 @@ static const struct panel_desc_dsi osd101t2045_53ts = {
 };
 
 #ifdef CONFIG_ARCH_ADV
+static const struct drm_display_mode inno_g101stn_mode = {
+	.clock = 51300,
+	.hdisplay = 1024,
+	.hsync_start = 1024 + 160,
+	.hsync_end = 1024 + 160 + 40,
+	.htotal = 1024 + 320,
+	.vdisplay = 600,
+	.vsync_start = 600 + 20,
+	.vsync_end = 600 + 20 + 5,
+	.vtotal = 600 + 35,
+	.vrefresh = 60,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+};
+
+static const struct panel_desc_dsi innolux_g101stn = {
+	.desc = {
+		.modes = &inno_g101stn_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 222,
+			.height = 125,
+		},
+		.delay = {
+			.prepare = 10,
+			.enable = 200,
+			.disable = 198,
+			.unprepare = 10,
+		},
+		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_EOT_PACKET,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
 static const struct drm_display_mode inno_tdm07040ws_mode = {
 	.clock = 51200,
 	.hdisplay = 1024,
@@ -4069,6 +4105,9 @@ static const struct of_device_id dsi_of_match[] = {
 	}, {
 		.compatible = "inno,tdm07040ws",
 		.data = &innolux_tdm07040ws
+	}, {
+		.compatible = "inno,g101stn",
+		.data = &innolux_g101stn
 	}, {
 #endif
 		/* sentinel */
