@@ -13,6 +13,9 @@ obj-$(CONFIG_LOGO_SUN_CLUT224)		+= logo_sun_clut224.o
 obj-$(CONFIG_LOGO_SUPERH_MONO)		+= logo_superh_mono.o
 obj-$(CONFIG_LOGO_SUPERH_VGA16)		+= logo_superh_vga16.o
 obj-$(CONFIG_LOGO_SUPERH_CLUT224)	+= logo_superh_clut224.o
+ifeq ($(CONFIG_LOGO_ADV_CUSTOM),y)
+obj-$(CONFIG_LOGO_ADV_CUSTOM)  += logo_adv_custom_1024_600_clut224.o logo_adv_custom_1280_800_clut224.o logo_adv_custom_1366_768_clut224.o logo_adv_custom_1920_1080_clut224.o
+endif
 
 obj-$(CONFIG_SPU_BASE)			+= logo_spe_clut224.o
 
