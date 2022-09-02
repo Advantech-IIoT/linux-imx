@@ -211,6 +211,11 @@ config ARCH_MXC
 	  This enables support for the ARMv8 based SoCs in the
 	  NXP i.MX family.
 
+config ARCH_ADV
+	bool "Advantech board"
+	help
+	  This enables support for Advantech Board.
+
 config HAVE_IMX_BUSFREQ
 	bool "i.MX8M busfreq"
 
