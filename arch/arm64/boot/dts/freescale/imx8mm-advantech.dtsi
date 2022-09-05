@@ -118,7 +118,7 @@
 
 /* disabled the snvs rtc. */
 &snvs_rtc {
-	status = "disabled";
+	status = "okay";
 };
 
 /**************
