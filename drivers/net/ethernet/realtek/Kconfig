@@ -139,4 +139,27 @@ config RTASE
 	  To compile this driver as a module, choose M here: the module
 	  will be called rtase. This is recommended.
 
+config R8168_NAPI
+	bool "R8168 NAPI"
+	depends on RTL81XX
+	help
+	  R8168 NAPI
+
+config R8168_VLAN
+	bool "R8168 VLAN"
+	depends on RTL81XX
+	help
+	  R8168 VLAN
+
+config RTL81XX
+	tristate "RealTek RTL81xx PCI Ethernet Adapter support"
+	depends on PCI
+	select R8168_NAPI
+	select R8168_VLAN
+	help
+	  Say Y here if you have a Realtek RTL81xx PCI  Ethernet Adapter.
+
+	  To compile this driver as a module, choose M here: the module
+	  will be called r810x.  This is recommended.
+
 endif # NET_VENDOR_REALTEK
