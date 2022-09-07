@@ -116,7 +116,7 @@
 	status = "okay";
 };
 
-/* disabled the snvs rtc. */
+/* enable the snvs rtc. */
 &snvs_rtc {
 	status = "okay";
 };
