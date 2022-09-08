@@ -45,8 +45,19 @@ extern const struct linux_logo logo_superh_mono;
 extern const struct linux_logo logo_superh_vga16;
 extern const struct linux_logo logo_superh_clut224;
 extern const struct linux_logo logo_spe_clut224;
+#ifdef CONFIG_LOGO_ADV_CUSTOM
+extern const struct linux_logo logo_adv_custom_1024_600_clut224;
+extern const struct linux_logo logo_adv_custom_1280_800_clut224;
+extern const struct linux_logo logo_adv_custom_1366_768_clut224;
+extern const struct linux_logo logo_adv_custom_1920_1080_clut224;
+#endif
 
+#ifdef CONFIG_LOGO_ADV_CUSTOM
+extern const struct linux_logo *fb_find_logo(int depth , unsigned int xres, unsigned int yres);
+#else
 extern const struct linux_logo *fb_find_logo(int depth);
+#endif
+
 #ifdef CONFIG_FB_LOGO_EXTRA
 extern void fb_append_extra_logo(const struct linux_logo *logo,
 				 unsigned int n);
