@@ -2,6 +2,12 @@
 menu "CAN USB interfaces"
 	depends on USB
 
+config CAN_F81604
+	tristate "2 devices USB2CAN interface"
+	help
+		This driver supports the USB2CAN interface
+		from 2 devices (http://www.8devices.com).
+
 config CAN_8DEV_USB
 	tristate "8 devices USB2CAN interface"
 	help
