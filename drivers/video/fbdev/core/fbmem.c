@@ -524,6 +524,10 @@ static int fb_show_logo_line(struct fb_info *info, int rotate,
 
 	image.width = logo->width;
 	image.height = logo->height;
+#ifdef  CONFIG_LOGO_ADV_CUSTOM
+	image.dx = (info->var.xres / 2) - (image.width / 2);
+	image.dy = (info->var.yres / 2) - (image.height / 2);
+#endif
 
 	if (rotate) {
 		logo_rotate = kmalloc_array(logo->width, logo->height,
@@ -640,7 +644,11 @@ int fb_prepare_logo(struct fb_info *info, int rotate)
 	}
 
 	/* Return if no suitable logo was found */
+#ifdef  CONFIG_LOGO_ADV_CUSTOM
+	fb_logo.logo = fb_find_logo(depth,info->var.xres,info->var.yres);
+#else
 	fb_logo.logo = fb_find_logo(depth);
+#endif
 
 	if (!fb_logo.logo) {
 		return 0;
