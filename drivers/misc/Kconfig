@@ -497,6 +497,12 @@ config VCPU_STALL_DETECTOR
 
 	  If you do not intend to run this kernel as a guest, say N.
 
+config GPIOS_EXPORT_SYS
+	def_bool y
+	depends on GPIOLIB
+	help
+		Export GPIO into sysfs.
+
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"
