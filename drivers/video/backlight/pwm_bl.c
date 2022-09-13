@@ -53,6 +53,16 @@ static void pwm_backlight_power_on(struct pwm_bl_data *pb)
 	if (err < 0)
 		dev_err(pb->dev, "failed to enable power supply\n");
 
+#ifdef CONFIG_ARCH_ADV
+	if (pb->enable_gpio)
+		gpiod_set_value_cansleep(pb->enable_gpio, 1);
+
+	if (pb->post_pwm_on_delay)
+		msleep(pb->post_pwm_on_delay);
+
+	state.enabled = true;
+	pwm_apply_state(pb->pwm, &state);
+#else
 	state.enabled = true;
 	pwm_apply_state(pb->pwm, &state);
 
@@ -61,6 +71,7 @@ static void pwm_backlight_power_on(struct pwm_bl_data *pb)
 
 	if (pb->enable_gpio)
 		gpiod_set_value_cansleep(pb->enable_gpio, 1);
+#endif
 
 	pb->enabled = true;
 }
@@ -73,6 +84,17 @@ static void pwm_backlight_power_off(struct pwm_bl_data *pb)
 	if (!pb->enabled)
 		return;
 
+#ifdef CONFIG_ARCH_ADV
+	state.enabled = false;
+	state.duty_cycle = 0;
+	pwm_apply_state(pb->pwm, &state);
+
+	if (pb->pwm_off_delay)
+		msleep(pb->pwm_off_delay);
+
+	if (pb->enable_gpio)
+		gpiod_set_value_cansleep(pb->enable_gpio, 0);
+#else
 	if (pb->enable_gpio)
 		gpiod_set_value_cansleep(pb->enable_gpio, 0);
 
@@ -82,6 +104,7 @@ static void pwm_backlight_power_off(struct pwm_bl_data *pb)
 	state.enabled = false;
 	state.duty_cycle = 0;
 	pwm_apply_state(pb->pwm, &state);
+#endif
 
 	regulator_disable(pb->power_supply);
 	pb->enabled = false;
