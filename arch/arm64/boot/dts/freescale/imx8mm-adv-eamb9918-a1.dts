@@ -113,7 +113,7 @@
 	keep-power-in-suspend;
 	non-removable;
 	mmc-pwrseq = <&usdhc1_pwrseq>;
-	status = "disabled";
+	status = "okay";
 };
 
 /***************************************
