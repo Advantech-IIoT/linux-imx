@@ -4993,6 +4993,35 @@ static const struct panel_desc_dsi innolux_g156bge = {
 	.format = MIPI_DSI_FMT_RGB888,
 	.lanes = 4,
 };
+
+static const struct drm_display_mode auo_g215han_mode = {
+	.clock = 147978,
+	.hdisplay = 1920,
+	.hsync_start = 1920 + 80,
+	.hsync_end = 1920 + 80 + 20,
+	.htotal = 1920 + 80 + 80 + 20,
+	.vdisplay = 1080,
+	.vsync_start = 1080 + 20,
+	.vsync_end = 1080 + 20 + 10,
+	.vtotal = 1080 + 20 + 20 + 10,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+};
+
+static const struct panel_desc_dsi auo_g215han = {
+	.desc = {
+		.modes = &auo_g215han_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 476,
+			.height = 268,
+		},
+		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_EOT_PACKET,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
 #endif
 
 static const struct of_device_id dsi_of_match[] = {
@@ -5031,6 +5060,9 @@ static const struct of_device_id dsi_of_match[] = {
 		.compatible = "inno,tdm07040ws",
 		.data = &innolux_tdm07040ws
 	}, {
+		.compatible = "auo,g215han",
+		.data = &auo_g215han
+	}, {	
 #endif
 		/* sentinel */
 	}
