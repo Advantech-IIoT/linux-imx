@@ -390,7 +390,7 @@
 
 		ethphy0: ethernet-phy@4 {
 			compatible = "ethernet-phy-ieee802.3-c22";
-			reg = <4>;
+			//reg = <4>;
 			qca,disable-smarteee;
 			vddio-supply = <&vddio>;
 
@@ -398,6 +398,7 @@
 				regulator-min-microvolt = <1800000>;
 				regulator-max-microvolt = <1800000>;
 			};
+			eee-broken-1000t;
 		};
 	};
 };
