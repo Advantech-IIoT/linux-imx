@@ -3211,6 +3211,27 @@ static int ar8035_phy_fixup(struct phy_device *dev)
 
 #define PHY_ID_AR8035 0x004dd072
 
+static int rtl8211f_phy_fixup(struct phy_device *dev)
+{
+	u16 val;
+
+	// PHY WORK LED 
+	// LED0: 1000M,100M,10M Active	  Reg16 b0,b1,b3,b4 (0x1B)
+	// 100M LINK : LED1->1, LED2->0	  Reg16 b6
+	// 1000M LINK: LED1->0, LED2->1   Reg16 b13
+	val = 0x10;
+	val |= 0x40;
+	val |= 0x2000;
+	val |= 0x8000;	//Mode B, Reg16 b15
+
+	phy_write(dev, 0x1f, 0xd04);
+	phy_write(dev, 0x10, val);
+	phy_write(dev, 0x1f, 0x0);
+	return 0;
+}
+
+#define PHY_ID_REALTEK_8211F	0x001cc916
+
 static int __init phy_init(void)
 {
 	int rc;
@@ -3237,6 +3258,8 @@ err_c45:
 				ar8031_phy_fixup);
 	phy_register_fixup_for_uid(PHY_ID_AR8035, 0xffffffef,
 				ar8035_phy_fixup);
+	phy_register_fixup_for_uid(PHY_ID_REALTEK_8211F, 0xffffffff,
+				rtl8211f_phy_fixup);
 
 	return rc;
 }
