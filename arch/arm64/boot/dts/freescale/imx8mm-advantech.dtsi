@@ -40,6 +40,13 @@
 			no-map;
 			reg = <0 0xb8000000 0 0x400000>;
 		};
+		
+		/*
+		* reserved 6M for linux logo
+		*/
+		logo_reserved: logo_reserved {
+			reg = <0 0xb8400000 0 0x600000>;
+		};
 	};
 
 	/* sd card power regulator. */
