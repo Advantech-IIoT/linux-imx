@@ -100,6 +100,9 @@
 	aliases {
 		rtc0 = &s35390a;
 		rtc2 = &snvs_rtc;
+
+		watchdog0 = &advwdt;
+		watchdog1 = &wdog1;
 	};
 };
 
@@ -197,6 +200,17 @@
 		compatible = "microchip,usb2514b";
 		reg = <0x2c>;
     };
+
+	advwdt: wdt@29 {
+		compatible = "fsl,adv-wdt-i2c";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_wdt_en_1 &pinctrl_wdt_ping_1>;
+		status = "okay";
+		wdt-en = <&gpio1 9 0>;
+		wdt-ping = <&gpio1 15 0>;
+		reg = <0x29>;
+	};
+
 
 };
 
@@ -482,6 +496,18 @@
 			MX8MM_IOMUXC_UART1_TXD_ECSPI3_MOSI		0x82	/* ECSPI3_MOSI */
 			MX8MM_IOMUXC_UART2_RXD_ECSPI3_MISO		0x82	/* ECSPI3_MISO */
 			MX8MM_IOMUXC_UART2_TXD_GPIO5_IO25		0x19	/* ECSPI3_SS0 */
+		>;
+	};
+
+	pinctrl_wdt_en_1: wdt_engrp-1 {
+		fsl,pins = <
+			MX8MM_IOMUXC_GPIO1_IO09_GPIO1_IO9		0x19    /* WDT_EN */
+		>;
+	};
+
+	pinctrl_wdt_ping_1: wdt_pinggrp-1 {
+		fsl,pins = <
+			MX8MM_IOMUXC_GPIO1_IO15_GPIO1_IO15		0x19    /* WDOG_TRIG */
 		>;
 	};
 };
