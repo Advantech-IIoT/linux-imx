@@ -5086,6 +5086,9 @@ static int rtl_alloc_irq(struct rtl8169_private *tp)
 	case RTL_GIGA_MAC_VER_07 ... RTL_GIGA_MAC_VER_17:
 		flags = PCI_IRQ_LEGACY;
 		break;
+	case RTL_GIGA_MAC_VER_40:
+		flags = PCI_IRQ_LEGACY;
+		break;
 	default:
 		flags = PCI_IRQ_ALL_TYPES;
 		break;
