@@ -17,6 +17,10 @@
 #include <linux/pm.h>
 #include <linux/regmap.h>
 
+#ifdef CONFIG_ARCH_ADVANTECH
+#include <linux/watchdog.h>
+#endif
+
 static struct regmap *map;
 static u32 offset;
 static u32 value;
@@ -28,6 +32,9 @@ static void syscon_poweroff(void)
 	regmap_update_bits(map, offset, mask, value);
 
 	mdelay(1000);
+#ifdef CONFIG_ARCH_ADVANTECH
+	adv_wdt_power_off();
+#endif
 
 	pr_emerg("Unable to poweroff system\n");
 }

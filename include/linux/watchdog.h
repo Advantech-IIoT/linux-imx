@@ -215,4 +215,8 @@ int watchdog_set_last_hw_keepalive(struct watchdog_device *, unsigned int);
 /* devres register variant */
 int devm_watchdog_register_device(struct device *dev, struct watchdog_device *);
 
+#ifdef CONFIG_ARCH_ADVANTECH
+void adv_wdt_power_off(void);
+#endif
+
 #endif  /* ifndef _LINUX_WATCHDOG_H */
