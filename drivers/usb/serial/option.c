@@ -242,6 +242,8 @@ static void option_instat_callback(struct urb *urb);
 /* These Yuga products use Qualcomm's vendor ID */
 #define YUGA_PRODUCT_CLM920_NC5			0x9625
 
+#define SIERRA_VENDOR_ID			0x1199
+
 #define QUECTEL_VENDOR_ID			0x2c7c
 /* These Quectel products use Quectel's vendor ID */
 #define QUECTEL_PRODUCT_EC21			0x0121
@@ -1092,6 +1094,10 @@ static const struct usb_device_id option_ids[] = {
 	{ USB_DEVICE(QUALCOMM_VENDOR_ID, 0x0023)}, /* ONYX 3G device */
 	{ USB_DEVICE(QUALCOMM_VENDOR_ID, 0x9000), /* SIMCom SIM5218 */
 	  .driver_info = NCTRL(0) | NCTRL(1) | NCTRL(2) | NCTRL(3) | RSVD(4) },
+	{ USB_DEVICE_INTERFACE_CLASS(SIERRA_VENDOR_ID, 0x68c0, 0xff),
+	  .driver_info = NCTRL(0) | NCTRL(2) | RSVD(8) | RSVD(10) | RSVD(11) }, /* MC73xx */
+	{ USB_DEVICE_INTERFACE_CLASS(SIERRA_VENDOR_ID, 0x9041, 0xff),
+	  .driver_info = NCTRL(0) | NCTRL(2) | RSVD(8) | RSVD(10) | RSVD(11) }, /* MC7305/MC7355 */
 	/* Quectel products using Qualcomm vendor ID */
 	{ USB_DEVICE(QUALCOMM_VENDOR_ID, QUECTEL_PRODUCT_UC15)},
 	{ USB_DEVICE(QUALCOMM_VENDOR_ID, QUECTEL_PRODUCT_UC20),
@@ -1891,6 +1897,18 @@ static const struct usb_device_id option_ids[] = {
 	  .driver_info = RSVD(4) },
 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
+#ifdef CONFIG_ARCH_ADVANTECH
+	{ USB_DEVICE(0x1546, 0x1146) }, //for TOBY-L2
+	{ USB_DEVICE(0x1546, 0x1141) }, //for TOBY-L2
+	{ USB_DEVICE(0x1546, 0x1143) }, //for TOBY-L2
+	{ USB_DEVICE(0x1546, 0x1140) }, //for TOBY-L2
+	{ USB_DEVICE(0x2020, 0x2040) }, //for BM817C
+	{ USB_DEVICE(0x1546, 0x1102) }, //for EWM-C109F601E
+	{ USB_DEVICE(0x05c6, 0x9003)}, /* Quectel UC20 */
+	{ USB_DEVICE(0x2c7c, 0x0125)}, /* Quectel EC25/EC20 R2.0*/
+	{ USB_DEVICE_INTERFACE_CLASS(SIERRA_VENDOR_ID, 0x9071, 0xff),
+	  .driver_info = NCTRL(0) | NCTRL(2) | RSVD(8) | RSVD(10) | RSVD(11) }, /* Sierra MC7430 */
+#endif
 	{ USB_DEVICE(HAIER_VENDOR_ID, HAIER_PRODUCT_CE100) },
 	{ USB_DEVICE_AND_INTERFACE_INFO(HAIER_VENDOR_ID, HAIER_PRODUCT_CE81B, 0xff, 0xff, 0xff) },
 	/* Pirelli  */
