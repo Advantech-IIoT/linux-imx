@@ -433,6 +433,12 @@ config GPIO_SCU
 	help
 	  Say Y here to enable the imx8 gpio over SCFW MISC API
 
+config GPIO_ARCH_ADVANTECH
+	def_bool y
+	depends on GPIO_MXC
+	help
+		Set GPIO direction.
+
 config GPIO_MXS
 	bool "Freescale MXS GPIO support" if COMPILE_TEST
 	depends on ARCH_MXS || COMPILE_TEST
