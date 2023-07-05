@@ -3722,6 +3722,9 @@ static void spi_nor_shutdown(struct spi_mem *spimem)
  * keep them available as module aliases for existing platforms.
  */
 static const struct spi_device_id spi_nor_dev_ids[] = {
+#ifdef CONFIG_ARCH_ADVANTECH
+	{"n25qba16"},  {"n25qbb16"},
+#endif
 	/*
 	 * Allow non-DT platform devices to bind to the "spi-nor" modalias, and
 	 * hack around the fact that the SPI core does not provide uevent
