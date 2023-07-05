@@ -159,6 +159,60 @@ static int ar8035_phy_fixup(struct phy_device *dev)
 
 #define PHY_ID_AR8035 0x004dd072
 
+#if defined(CONFIG_ARCH_ADVANTECH) && defined(CONFIG_REALTEK_PHY)
+static int rtl8211e_phy_fixup(struct phy_device *dev)
+{
+
+	//pr_warn("%s:%d \n", __func__, __LINE__);
+	/*PHY LED OK*/
+
+	phy_write(dev, 0x1f, 0x0007);
+	phy_write(dev, 0x1e, 0x002c);
+	//Reg28 LED0(100M) Bit1 LED1(1000M) Bit6
+	phy_write(dev, 0x1c, 0x0042);
+	//Reg26 Bit6 LED2 
+	phy_write(dev, 0x1a, 0x0040);
+	phy_write(dev, 0x1f, 0x0000);
+
+	phy_write(dev, 0x1f, 0x0005);
+	phy_write(dev, 0x05, 0x8b82);
+	phy_write(dev, 0x06, 0x052b);
+	phy_write(dev, 0x1f, 0x0000);
+
+	return 0;
+}
+
+static int rtl8211f_phy_fixup(struct phy_device *dev)
+{
+	//pr_warn("%s:%d \n", __func__, __LINE__);
+	u16 val;
+
+	// PHY WORK LED 
+	// LED2: 1000M,100M,10M Active
+	// LED1: 100M LINK
+	// LED0: 1000M LINK
+	// EEE LED0/1/2 off
+	phy_write(dev, 0x1f, 0xd04);
+	phy_write(dev, 0x10, 0x6c48);
+	phy_write(dev, 0x11, 0x0);
+	phy_write(dev, 0x1f, 0x0);
+
+	// Disable Green Ethernet
+	phy_write(dev, 0x1b, 0x8011);
+	phy_write(dev, 0x1c, 0x573f);
+	// Enable Green Ethernet
+	//phy_write(dev, 0x1b, 0x8011);
+	//phy_write(dev, 0x10, 0xd73f);
+
+	phy_write(dev, 0x1f, 0x0);
+	return 0;
+}
+
+#define PHY_ID_REALTEK_8211E	0x001cc915
+#define PHY_ID_REALTEK_8211F	0x001cc916
+#define REALTEK_PHY_ID_MASK 	0x001fffff
+#endif
+
 static void __init imx6q_enet_phy_init(void)
 {
 	if (IS_BUILTIN(CONFIG_PHYLIB)) {
@@ -170,6 +224,13 @@ static void __init imx6q_enet_phy_init(void)
 				ar8031_phy_fixup);
 		phy_register_fixup_for_uid(PHY_ID_AR8035, 0xffffffef,
 				ar8035_phy_fixup);
+#if defined(CONFIG_ARCH_ADVANTECH) && defined(CONFIG_REALTEK_PHY)
+		phy_register_fixup_for_uid(PHY_ID_REALTEK_8211E, 0xffffffff,
+				rtl8211e_phy_fixup);
+		phy_register_fixup_for_uid(PHY_ID_REALTEK_8211F, 0xffffffff,
+				rtl8211f_phy_fixup);
+#endif
+
 	}
 }
 
