@@ -712,7 +712,7 @@ config MAX77620_WATCHDOG
 
 config ADVANTECH_RISC_WDT
         tristate "ADVANTECH Watchdog"
-        depends on WATCHDOG_CORE
+        depends on WATCHDOG_CORE && I2C
         help
           This is the driver for the hardware watchdog
           If you have one of these processors and wish to have
