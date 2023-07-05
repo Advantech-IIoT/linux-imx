@@ -863,6 +863,14 @@ static void rtl8168g_1_hw_phy_config(struct rtl8169_private *tp,
 
 	rtl8168g_disable_aldps(phydev);
 	rtl8168g_config_eee_phy(phydev);
+
+	/* restore to default page 0 */
+	phy_write(phydev, 0x1f, 0);
+
+	/* disable EEE green ethernet */
+	phy_write(phydev, 0x1B, 0x8011);
+	phy_write(phydev, 0x1C, 0x573f);
+
 }
 
 static void rtl8168g_2_hw_phy_config(struct rtl8169_private *tp,
