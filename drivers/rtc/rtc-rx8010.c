@@ -380,6 +380,7 @@ static int rx8010_probe(struct i2c_client *client)
 	struct device *dev = &client->dev;
 	struct rx8010_data *rx8010;
 	int err = 0;
+	u8 year;
 
 	rx8010 = devm_kzalloc(dev, sizeof(*rx8010), GFP_KERNEL);
 	if (!rx8010)
@@ -418,6 +419,18 @@ static int rx8010_probe(struct i2c_client *client)
 	rx8010->rtc->max_user_freq = 1;
 	rx8010->rtc->range_min = RTC_TIMESTAMP_BEGIN_2000;
 	rx8010->rtc->range_max = RTC_TIMESTAMP_END_2099;
+
+	// fix: the ubuntu system will repeat to show "systemd[1]: Time has been changed"
+	// the year can not > 2038
+	year = i2c_smbus_read_byte_data(client, RX8010_YEAR);
+	dev_err(&client->dev, "The RTC year is %x\n", year);
+	if (year >= 57 ){
+		dev_err(&client->dev, "The RTC year is too large, reset it as 00\n");
+		year = 0;
+		err = i2c_smbus_write_byte_data(client, RX8010_YEAR, year);
+		if (err < 0)
+			return err;
+	}
 
 	return rtc_register_device(rx8010->rtc);
 }
