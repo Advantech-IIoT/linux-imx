@@ -103,6 +103,10 @@
 
 		watchdog0 = &advwdt;
 		watchdog1 = &wdog1;
+
+		/* we need delete property "ethernet0" which already defined in imx8mm.dtsi and set ethernet1 for fec */
+		/delete-property/ ethernet0;
+		ethernet1 = &fec1;
 	};
 };
 
