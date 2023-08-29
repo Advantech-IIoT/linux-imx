@@ -123,10 +123,11 @@
 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_wlan>;
 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_wlan>;
 	bus-width = <4>;
-	cap-power-off-card;
-	pm-ignore-notify;
+	no-1-8-v;
 	keep-power-in-suspend;
 	non-removable;
+	wakeup-source;
+	fsl,sdio-interrupt-enabled;
 	mmc-pwrseq = <&usdhc1_pwrseq>;
 	status = "okay";
 };
