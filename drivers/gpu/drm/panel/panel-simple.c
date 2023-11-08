@@ -5541,7 +5541,7 @@ static const struct panel_desc_dsi innolux_g156bge = {
 };
 
 static const struct drm_display_mode auo_g215han_mode = {
-	.clock = 147978,
+	.clock = 71200,
 	.hdisplay = 1920,
 	.hsync_start = 1920 + 80,
 	.hsync_end = 1920 + 80 + 20,
