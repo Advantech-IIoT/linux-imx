@@ -5568,6 +5568,41 @@ static const struct panel_desc_dsi auo_g215han = {
 	.format = MIPI_DSI_FMT_RGB888,
 	.lanes = 4,
 };
+
+static const struct drm_display_mode inno_g070ace_mode = {
+	.clock = 76200,
+	.hdisplay = 800,
+	.hsync_start = 800 + 20,
+	.hsync_end = 800 + 24 + 20,
+	.htotal = 800 + 20 + 24 + 20,
+	.vdisplay = 480,
+	.vsync_start = 480 + 2,
+	.vsync_end = 480 + 6 + 2,
+	.vtotal = 480 + 2 + 6 + 2,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+};
+
+static const struct panel_desc_dsi innolux_g070ace = {
+	.desc = {
+		.modes = &inno_g070ace_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 152,
+			.height = 91,
+		},
+		.delay = {
+			.prepare = 10,
+			.enable = 200,
+			.disable = 198,
+			.unprepare = 10,
+		},
+		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
 #endif
 
 static const struct of_device_id dsi_of_match[] = {
@@ -5608,6 +5643,9 @@ static const struct of_device_id dsi_of_match[] = {
 	}, {
 		.compatible = "auo,g215han",
 		.data = &auo_g215han
+	}, {
+		.compatible = "inno,g070ace",
+		.data = &innolux_g070ace
 	}, {	
 #endif
 		/* sentinel */
