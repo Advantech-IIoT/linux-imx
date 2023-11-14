@@ -314,8 +314,10 @@ const struct linux_logo * __ref fb_find_logo(int depth , unsigned int xres, unsi
                 // example: fatload mmc ${mmcdev}:${mmcpart} 0xb8400000 logo.bmp
                 logo = load_bmp_from_mem(xres - __BMP_RESERVED_PIXEL, yres - __BMP_RESERVED_PIXEL);
                 if (logo != NULL) return logo;
-
-                if (xres <= 1024 && yres <= 600)
+		
+		if  (xres <= 800 && yres <= 480)
+			logo = &logo_adv_custom_800_480_clut224;
+		else if (xres <= 1024 && yres <= 600)
                         logo = &logo_adv_custom_1024_600_clut224;
                 else if (xres <= 1280 && yres <= 800)
                         logo = &logo_adv_custom_1280_800_clut224;
