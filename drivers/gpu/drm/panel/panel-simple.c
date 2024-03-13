@@ -4890,15 +4890,15 @@ static const struct panel_desc_dsi innolux_tdm07040ws = {
 
 
 static const struct drm_display_mode inno_g101ice_mode = {
-	.clock = 73000,
+	.clock = 73000,                  /* DSI clock */
 	.hdisplay = 1280,
 	.hsync_start = 1280 + 70,
 	.hsync_end = 1280 + 70 + 30,
-	.htotal = 1280 + 160,
+	.htotal = 1280 + 70 + 60 + 30,   /* LVDS timing */
 	.vdisplay = 800,
 	.vsync_start = 800 + 11,
 	.vsync_end = 800 + 11 + 4,
-	.vtotal = 800 + 23,
+	.vtotal = 800 + 11 + 8 + 4,      /* LVDS timing */
 };
 
 static const struct panel_desc_dsi innolux_g101ice = {
@@ -4911,10 +4911,10 @@ static const struct panel_desc_dsi innolux_g101ice = {
 			.height = 135,
 		},
 		.delay = {
-			.prepare = 10,
-			.enable = 200,
-			.disable = 198,
-			.unprepare = 10,
+			.prepare = 10,		/* T1+T2 */
+			.enable = 200,		/* T5 */
+			.disable = 198,		/* T6 */
+			.unprepare = 10,	/* T3+T7 */
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 	},
