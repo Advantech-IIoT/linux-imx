@@ -270,10 +270,9 @@ fail:
 	return ret;
 }
 
-static int __exit adv_wdt_i2c_remove(struct i2c_client *client)
+static void adv_wdt_i2c_remove(struct i2c_client *client)
 {
     gpio_set_value(adv_wdt.gpio_wdt_en, adv_wdt.wdt_en_off);
-	return 0;
 }
 
 static const struct i2c_device_id adv_wdt_i2c_id[] = {
