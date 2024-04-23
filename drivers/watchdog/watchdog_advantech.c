@@ -428,13 +428,11 @@ static int adv_wdt_i2c_probe(struct i2c_client *client, const struct i2c_device_
 	return watchdog_register_device(&wdev->wdog);
 }
 
-static int adv_wdt_remove(struct i2c_client *client)
+static void adv_wdt_remove(struct i2c_client *client)
 {
 	struct adv_wdt *wdev = i2c_get_clientdata(client);
 
 	watchdog_unregister_device(&wdev->wdog);
-
-	return 0;
 }
 
 static void adv_wdt_i2c_shutdown(struct i2c_client *client)
