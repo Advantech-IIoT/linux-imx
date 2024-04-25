@@ -422,6 +422,15 @@
 	};
 };
 
+&pcie_phy {
+	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
+	fsl,clkreq-unsupported;	
+	fsl,tx-deemph-gen1 = <0x2d>;
+	fsl,tx-deemph-gen2 = <0xf>;
+	clocks = <&pcie0_refclk>;
+	status = "okay";
+};
+
 /**********************************
 * PCIe:
 * Dual mode operation to function 
@@ -431,7 +440,6 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie0>;
 	reset-gpio = <&gpio1 13 GPIO_ACTIVE_LOW>;
-	disable-gpio = <&gpio1 5 GPIO_ACTIVE_LOW>;
 	clocks = <&clk IMX8MM_CLK_PCIE1_ROOT>,
 		 <&clk IMX8MM_CLK_PCIE1_AUX>,
 		 <&pcie0_refclk>;
@@ -653,7 +661,7 @@
 
 	pinctrl_pcie0_reg: pcie0reggrp {
 		fsl,pins = <
-			MX8MM_IOMUXC_GPIO1_IO05_GPIO1_IO5		0x41	/* 0x19?? */
+			MX8MM_IOMUXC_GPIO1_IO05_GPIO1_IO5		0x41
 		>;
 	};
 
