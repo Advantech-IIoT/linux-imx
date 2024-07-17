@@ -81,6 +81,27 @@ struct rtl821x_priv {
 	u16 phycr2;
 };
 
+#ifdef CONFIG_ARCH_ADV
+static void rtl8211f_phy_fixup(struct phy_device *dev)
+{
+	u16 val;
+	// PHY WORK LED 
+	// LED0: 1000M,100M,10M Active	  Reg16 b0,b1,b3,b4 (0x1B)
+	// 100M LINK : LED1->1, LED2->0	  Reg16 b6
+	// 1000M LINK: LED1->0, LED2->1   Reg16 b13
+	val = 0x10;
+	val |= 0x40;
+	val |= 0x2000;
+	val |= 0x8000;	//Mode B, Reg16 b15
+
+	msleep(200);
+	phy_write(dev, 0x1f, 0xd04);
+	phy_write(dev, 0x10, val);
+	phy_write(dev, 0x11, 0x0);
+	phy_write(dev, 0x1f, 0x0);
+}
+#endif
+
 static bool is_rtl8211fvd(u32 phy_id)
 {
 	return phy_id == RTL_8211FVD_PHYID;
@@ -126,6 +147,13 @@ static int rtl821x_probe(struct phy_device *phydev)
 	}
 
 	phydev->priv = priv;
+
+#ifdef CONFIG_ARCH_ADV
+	// match RTL8211F Gigabit Ethernet (0x001cc916)
+	if (phydev && (0x001cc916 == phydev->phy_id)) {
+		rtl8211f_phy_fixup(phydev);
+	}
+#endif
 
 	return 0;
 }
@@ -354,6 +382,13 @@ static int rtl8211f_config_init(struct phy_device *phydev)
 			ERR_PTR(ret));
 		return ret;
 	}
+
+#ifdef CONFIG_ARCH_ADV
+	// match RTL8211F Gigabit Ethernet (0x001cc916)
+	if (phydev && (0x001cc916 == phydev->phy_id)) {
+		rtl8211f_phy_fixup(phydev);
+	}
+#endif
 
 	switch (phydev->interface) {
 	case PHY_INTERFACE_MODE_RGMII:
