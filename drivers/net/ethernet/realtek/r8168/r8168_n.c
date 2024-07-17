@@ -26546,7 +26546,9 @@ err1:
         tp->RxDescLength = RX_DESC_LEN_TYPE_1;
         if (tp->InitRxDescType == RX_DESC_RING_TYPE_2)
                 tp->RxDescLength = RX_DESC_LEN_TYPE_2;
-
+#ifdef CONFIG_ARCH_ADV
+        RTL_W16(tp, CustomLED, 0x428);
+#endif
         tp->NicCustLedValue = RTL_R16(tp, CustomLED);
 
         rtl8168_get_hw_wol(dev);
