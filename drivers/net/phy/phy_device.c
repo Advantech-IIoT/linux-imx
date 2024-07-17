@@ -3598,6 +3598,8 @@ static int ar8035_phy_fixup(struct phy_device *dev)
 
 #define PHY_ID_AR8035 0x004dd072
 
+#if 0
+// move to drivers/net/phy/realtek.c rtl8211f_phy_fixup
 static int rtl8211f_phy_fixup(struct phy_device *dev)
 {
 	u16 val;
@@ -3616,6 +3618,7 @@ static int rtl8211f_phy_fixup(struct phy_device *dev)
 	phy_write(dev, 0x1f, 0x0);
 	return 0;
 }
+#endif
 
 #define PHY_ID_REALTEK_8211F	0x001cc916
 
@@ -3658,8 +3661,9 @@ err_ethtool_phy_ops:
 				ar8031_phy_fixup);
 	phy_register_fixup_for_uid(PHY_ID_AR8035, 0xffffffef,
 				ar8035_phy_fixup);
-	phy_register_fixup_for_uid(PHY_ID_REALTEK_8211F, 0xffffffff,
-				rtl8211f_phy_fixup);
+// rtl8211f_phy_fixup already move to drivers/net/phy/realtek.c
+//	phy_register_fixup_for_uid(PHY_ID_REALTEK_8211F, 0xffffffff,
+//				rtl8211f_phy_fixup);
 
 	return rc;
 }
