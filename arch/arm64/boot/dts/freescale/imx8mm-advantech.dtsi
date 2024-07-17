@@ -411,6 +411,13 @@
 			compatible = "ethernet-phy-ieee802.3-c22";
 			//reg = <4>;
 			eee-broken-1000t;
+			/* Realtek RTL8211F (0x001cc916) */
+			interrupt-parent = <&gpio1>;
+			interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
+			at803x,eee-disabled;
+			at803x,vddio-1p8v;
+			realtek,aldps-enable;
+			realtek,clkout-disable;
 			qca,disable-smarteee;
 			vddio-supply = <&vddio>;
 
@@ -582,6 +589,7 @@
 			MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x91
 			MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x91
 			MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x1f
+			MX8MM_IOMUXC_GPIO1_IO06_GPIO1_IO6		0x19	/* RGMII0_INT# */
 		>;
 	};
 
