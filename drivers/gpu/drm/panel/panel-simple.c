@@ -451,17 +451,8 @@ static int panel_simple_suspend(struct device *dev)
 {
 	struct panel_simple *p = dev_get_drvdata(dev);
 
-#ifdef CONFIG_ARCH_ADV
-    gpiod_set_value_cansleep(p->enable_gpio, 0);
-
-    if (p->desc->delay.unprepare)
-		msleep(p->desc->delay.unprepare);
-
-	regulator_disable(p->supply);
-#else
 	gpiod_set_value_cansleep(p->enable_gpio, 0);
 	regulator_disable(p->supply);
-#endif
 	p->unprepared_time = ktime_get();
 
 	kfree(p->edid);
