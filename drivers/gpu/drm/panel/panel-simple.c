@@ -467,10 +467,19 @@ static int panel_simple_unprepare(struct drm_panel *panel)
 {
 	int ret;
 
+#ifdef CONFIG_ARCH_ADV
+	gpiod_set_value_cansleep(p->enable_gpio, 0);
+
+	if (p->desc->delay.unprepare)
+		msleep(p->desc->delay.unprepare);
+
+	regulator_disable(p->supply);
+#else
 	pm_runtime_mark_last_busy(panel->dev);
 	ret = pm_runtime_put_autosuspend(panel->dev);
 	if (ret < 0)
 		return ret;
+#endif
 
 	return 0;
 }
@@ -500,11 +509,27 @@ static int panel_simple_prepare(struct drm_panel *panel)
 {
 	int ret;
 
+#ifdef CONFIG_ARCH_ADV
+	unsigned int delay;
+
+	ret = regulator_enable(p->supply);
+	if (ret < 0) {
+		dev_err(panel->dev, "failed to enable supply: %d\n", ret);
+		return ret;
+	}
+
+	gpiod_set_value_cansleep(p->enable_gpio, 1);
+
+	delay = p->desc->delay.prepare;
+	if (delay)
+		msleep(delay);
+#else
 	ret = pm_runtime_get_sync(panel->dev);
 	if (ret < 0) {
 		pm_runtime_put_autosuspend(panel->dev);
 		return ret;
 	}
+#endif
 
 	return 0;
 }
@@ -536,6 +561,15 @@ static int panel_simple_get_modes(struct drm_panel *panel,
 
 	/* probe EDID if a DDC bus is available */
 	if (p->ddc) {
+#ifdef CONFIG_ARCH_ADV
+		struct edid *edid = drm_get_edid(connector, p->ddc);
+
+		drm_connector_update_edid_property(connector, edid);
+		if (edid) {
+			num += drm_add_edid_modes(connector, edid);
+			kfree(edid);
+		}
+#else
 		pm_runtime_get_sync(panel->dev);
 
 		if (!p->drm_edid)
@@ -547,6 +581,7 @@ static int panel_simple_get_modes(struct drm_panel *panel,
 
 		pm_runtime_mark_last_busy(panel->dev);
 		pm_runtime_put_autosuspend(panel->dev);
+#endif
 	}
 
 	/* add hard-coded panel modes */
@@ -877,6 +912,7 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
 
 	dev_set_drvdata(dev, panel);
 
+#ifndef CONFIG_ARCH_ADV
 	/*
 	 * We use runtime PM for prepare / unprepare since those power the panel
 	 * on and off and those can be very slow operations. This is important
@@ -886,20 +922,27 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
 	pm_runtime_enable(dev);
 	pm_runtime_set_autosuspend_delay(dev, 1000);
 	pm_runtime_use_autosuspend(dev);
+#endif
 
 	err = drm_panel_of_backlight(&panel->base);
 	if (err) {
 		dev_err_probe(dev, err, "Could not find backlight\n");
+#ifdef CONFIG_ARCH_ADV
+		goto free_ddc;
+#else
 		goto disable_pm_runtime;
+#endif
 	}
 
 	drm_panel_add(&panel->base);
 
 	return panel;
 
+#ifndef CONFIG_ARCH_ADV
 disable_pm_runtime:
 	pm_runtime_dont_use_autosuspend(dev);
 	pm_runtime_disable(dev);
+#endif
 free_ddc:
 	if (panel->ddc)
 		put_device(&panel->ddc->dev);
@@ -944,8 +987,10 @@ static void panel_simple_remove(struct device *dev)
 	drm_panel_remove(&panel->base);
 	panel_simple_shutdown(dev);
 
+#ifndef CONFIG_ARCH_ADV
 	pm_runtime_dont_use_autosuspend(dev);
 	pm_runtime_disable(dev);
+#endif
 	if (panel->ddc)
 		put_device(&panel->ddc->dev);
 }
@@ -5697,7 +5742,9 @@ static struct platform_driver panel_simple_platform_driver = {
 	.driver = {
 		.name = "panel-simple",
 		.of_match_table = platform_of_match,
+#ifndef CONFIG_ARCH_ADV
 		.pm = &panel_simple_pm_ops,
+#endif
 	},
 	.probe = panel_simple_platform_probe,
 	.remove = panel_simple_platform_remove,
@@ -6248,7 +6295,9 @@ static struct mipi_dsi_driver panel_simple_dsi_driver = {
 	.driver = {
 		.name = "panel-simple-dsi",
 		.of_match_table = dsi_of_match,
+#ifndef CONFIG_ARCH_ADV
 		.pm = &panel_simple_pm_ops,
+#endif
 	},
 	.probe = panel_simple_dsi_probe,
 	.remove = panel_simple_dsi_remove,
