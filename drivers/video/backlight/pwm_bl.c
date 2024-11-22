@@ -50,20 +50,19 @@ static void pwm_backlight_power_on(struct pwm_bl_data *pb)
 		err = regulator_enable(pb->power_supply);
 		if (err < 0)
 			dev_err(pb->dev, "failed to enable power supply\n");
-
-#ifdef CONFIG_ARCH_ADV
-		if (pb->enable_gpio)
-			gpiod_set_value_cansleep(pb->enable_gpio, 1);
-
-		if (pb->post_pwm_on_delay)
-			msleep(pb->post_pwm_on_delay);
-#endif
 	}
 
+#ifdef CONFIG_ARCH_ADV
+	gpiod_set_value_cansleep(pb->enable_gpio, 1);
+
+	if (pb->post_pwm_on_delay)
+		msleep(pb->post_pwm_on_delay);
+#else
 	if (pb->post_pwm_on_delay)
 		msleep(pb->post_pwm_on_delay);
 
 	gpiod_set_value_cansleep(pb->enable_gpio, 1);
+#endif
 
 	pb->enabled = true;
 }
@@ -73,15 +72,13 @@ static void pwm_backlight_power_off(struct pwm_bl_data *pb)
 	if (!pb->enabled)
 		return;
 
-	gpiod_set_value_cansleep(pb->enable_gpio, 0);
-
 #ifdef CONFIG_ARCH_ADV
 	if (pb->pwm_off_delay)
 		msleep(pb->pwm_off_delay);
 
-	if (pb->enable_gpio)
-		gpiod_set_value_cansleep(pb->enable_gpio, 0);
+	gpiod_set_value_cansleep(pb->enable_gpio, 0);
 #else
+	gpiod_set_value_cansleep(pb->enable_gpio, 0);
 
 	if (pb->pwm_off_delay)
 		msleep(pb->pwm_off_delay);
