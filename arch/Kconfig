@@ -1157,7 +1157,7 @@ config ARCH_EPHEMERAL_INODES
 	  host kernel for an UML kernel).
 
 config ARCH_SUPPORTS_RT
-	bool
+	def_bool y
 
 config CPU_NO_EFFICIENT_FFS
 	def_bool n
