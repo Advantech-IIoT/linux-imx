@@ -90,6 +90,8 @@ config FSL_ENETC_MDIO
 config FSL_ENETC_PTP_CLOCK
 	tristate "ENETC PTP clock driver"
 	depends on PTP_1588_CLOCK_QORIQ && (FSL_ENETC || FSL_ENETC_VF)
+	depends on FSL_ENETC || !FSL_ENETC
+	depends on FSL_ENETC_VF || !FSL_ENETC_VF
 	default y
 	help
 	  This driver adds support for using the ENETC 1588 timer

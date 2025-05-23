@@ -428,6 +428,7 @@ void enetc_ptp_clock_update()
 	list_for_each_entry(entry, &netdev_list, list)
 		enetc_est_reset(entry->dev);
 }
+EXPORT_SYMBOL_GPL(enetc_ptp_clock_update);
 
 /* CBD Class 7: Stream Identity Entry Set Descriptor - Long Format */
 static int enetc_cb_streamid_set(struct net_device *ndev, u32 index,

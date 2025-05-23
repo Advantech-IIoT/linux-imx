@@ -1721,6 +1721,7 @@ int enetc_pmac_reset(struct net_device *ndev, bool enable)
 
 	return 0;
 }
+EXPORT_SYMBOL_GPL(enetc_pmac_reset);
 
 static int enetc_mm_wait_tx_active(struct enetc_hw *hw, int verify_time)
 {
