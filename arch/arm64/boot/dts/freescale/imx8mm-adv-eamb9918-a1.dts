@@ -133,6 +133,7 @@
 * has enabled in imx8mm-advantech.dtsi.
 ***************************************/
 &fec1 {
+	compatible = "fsl,imx8mm-fec-ecat", "fsl,imx8mq-fec-ecat", "fsl,imx6sx-fec-ecat";
 	status = "okay";
 };
 
