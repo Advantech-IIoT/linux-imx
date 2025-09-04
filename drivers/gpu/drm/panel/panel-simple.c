@@ -5096,6 +5096,41 @@ static const struct panel_desc_dsi innolux_g070ace = {
 	.format = MIPI_DSI_FMT_RGB888,
 	.lanes = 4,
 };
+
+static const struct drm_display_mode tianma_p0700wvf_mode = {
+	.clock = 27200,                /* DSI clock */
+	.hdisplay = 800,
+	.hsync_start = 800 + 40,
+	.hsync_end = 800 + 40 + 10,
+	.htotal = 800 + 40 + 10 + 10,  /* LVDS timing */
+	.vdisplay = 480,
+	.vsync_start = 480 + 28,
+	.vsync_end = 480 + 28 + 10,
+	.vtotal = 480 + 28 + 10 + 10,   /* LVDS timing */
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+};
+
+static const struct panel_desc_dsi tianma_p0700wvf = {
+	.desc = {
+		.modes = &tianma_p0700wvf_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 152,
+			.height = 91,
+		},
+		.delay = {
+			.prepare = 10,		/* T1+T2 */
+			.enable = 200,		/* T5 */
+			.disable = 200,		/* T6 */
+			.unprepare = 10,	/* T3 */
+		},
+		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
 #endif
 
 static const struct of_device_id dsi_of_match[] = {
@@ -5139,7 +5174,10 @@ static const struct of_device_id dsi_of_match[] = {
 	}, {
 		.compatible = "inno,g070ace",
 		.data = &innolux_g070ace
-	}, {	
+	}, {
+		.compatible = "tianma,p0700wvf",
+		.data = &tianma_p0700wvf
+	}, {
 #endif
 		/* sentinel */
 	}
