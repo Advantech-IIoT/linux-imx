@@ -805,6 +805,10 @@ EXPORT_SYMBOL_GPL(cpuidle_register);
  */
 static int __init cpuidle_init(void)
 {
+#ifdef CONFIG_ARCH_ADV
+	// redmine #49711 default disable cpuidle
+	disable_cpuidle();
+#endif
 	if (cpuidle_disabled())
 		return -ENODEV;
 
