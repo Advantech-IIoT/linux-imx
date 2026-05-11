@@ -101,6 +101,7 @@ static inline void __scatterwalk_flush_dcache_pages(struct page *base_page,
 						    unsigned int nbytes)
 {
 	unsigned int num_pages;
+	unsigned int i;
 
 	base_page += offset / PAGE_SIZE;
 	offset %= PAGE_SIZE;
@@ -112,7 +113,7 @@ static inline void __scatterwalk_flush_dcache_pages(struct page *base_page,
 	num_pages = nbytes / PAGE_SIZE;
 	num_pages += DIV_ROUND_UP(offset + (nbytes % PAGE_SIZE), PAGE_SIZE);
 
-	for (unsigned int i = 0; i < num_pages; i++)
+	for (i = 0; i < num_pages; i++)
 		flush_dcache_page(base_page + i);
 }
 
