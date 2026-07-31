@@ -231,6 +231,11 @@
 
 &i2c4 {
 	status = "okay";
+
+	stmvl53lx: stmvl53lx@29 {
+		compatible = "st,stmvl53lx";
+		reg = <0x29>;
+	};
 };
 
 /***********************
