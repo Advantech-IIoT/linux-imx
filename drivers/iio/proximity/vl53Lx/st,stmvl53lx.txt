@@ -1,0 +1,26 @@
+StMicroelectronics vl53lx
+
+Requires properties:
+- compatible: must be "st,stmvl53lx".
+- reg: I2C address of the chip.
+- xsdn-gpio: gpio number connected to vl53lx reset pin.
+
+Optional properties:
+- intr-gpio: gpio number connected to vl53lx irq pin.
+- vdd: a phandle for the regulator supplying power for vl53lx.
+- pwren-gpio: gpio number use to control vl53lx power.
+
+Example:
+	&i2c1 {
+		/* ... */
+
+		stmvl53lx: stmvl53lx@29 {
+			compatible = "st,stmvl53lx";
+			reg = <0x29>;
+			xsdn-gpio = <19>;
+			pwren-gpio = <12>;
+			intr-gpio = <16>;
+		};
+
+		/* ... */
+	};
