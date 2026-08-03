@@ -16,7 +16,7 @@ ifdef VL53LX_LOG_ENABLE
 ccflags-y	+= -DVL53LX_LOG_ENABLE
 endif
 
-obj-$(CONFIG_STMVL53LX)	+= stmvl53lx.o
+obj-y	+= stmvl53lx.o
 stmvl53lx-objs		:= stmvl53lx_module.o stmvl53lx_module-i2c.o
 stmvl53lx-objs		+= vl53lx_platform_ipp.o
 stmvl53lx-objs		+= protected/src/vl53lx_hist_funcs.o
