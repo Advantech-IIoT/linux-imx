@@ -3,6 +3,8 @@
 #
 
 ccflags-y	+= -I$(src)/inc -I$(src) -I$(src)/protected/inc
+ccflags-y	+= -I$(srctree)/drivers/iio/proximity/vl53Lx/inc
+ccflags-y	+= -I$(srctree)/drivers/iio/proximity/vl53Lx/protected/inc
 
 ifdef DEBUG
 ccflags-y	+= -DDEBUG
