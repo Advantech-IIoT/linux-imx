@@ -232,10 +232,17 @@
 &i2c4 {
 	status = "okay";
 
+	/* tof sensor */
 	stmvl53lx: stmvl53lx@29 {
 		compatible = "st,stmvl53lx";
 		reg = <0x29>;
 		xsdn-gpio = <19>;
+	};
+
+	/* light sensor */
+	opt3001@44 {
+		compatible = "ti,opt3001";
+		reg = <0x44>;
 	};
 };
 
