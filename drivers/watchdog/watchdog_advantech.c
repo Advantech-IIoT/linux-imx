@@ -300,13 +300,13 @@ static const struct watchdog_ops adv_wdt_fops = {
 	.restart        = adv_wdt_restart,
 };
 
-static int adv_wdt_i2c_probe(struct i2c_client *client)
+static int adv_wdt_i2c_probe(struct i2c_client *client, const struct i2c_device_id *id)
 {
 	struct device_node *np = client->dev.of_node;
 	struct adv_wdt_device *wdev;
 	int ret;
 	unsigned int tmp_version;
-	int flags;
+	enum of_gpio_flags flags;
 
 	if (!np)
 	{
@@ -323,10 +323,9 @@ static int adv_wdt_i2c_probe(struct i2c_client *client)
 		return -ENOMEM;
 
 	//Setting GPIO
-	wdev->gpio_wdt_en = of_get_named_gpio(np, "wdt-en", 0);
+	wdev->gpio_wdt_en = of_get_named_gpio_flags(np, "wdt-en", 0, &flags);
 	if (!gpio_is_valid(wdev->gpio_wdt_en))
 		return -ENODEV;	
-	flags = gpiod_get_direction(gpio_to_desc(wdev->gpio_wdt_en));
 	wdev->wdt_en_off = !flags;
 	ret = devm_gpio_request_one(&client->dev, wdev->gpio_wdt_en,
 				GPIOF_OUT_INIT_LOW, "adv_wdt.wdt_en");
@@ -336,11 +335,10 @@ static int adv_wdt_i2c_probe(struct i2c_client *client)
 	}
 	gpio_direction_output(wdev->gpio_wdt_en, flags);
 
-	wdev->gpio_wdt_ping = of_get_named_gpio(np, "wdt-ping", 0);
+	wdev->gpio_wdt_ping = of_get_named_gpio_flags(np, "wdt-ping", 0, &flags);
 	if (!gpio_is_valid(wdev->gpio_wdt_ping))
 		return -ENODEV;	
 
-	flags = gpiod_get_direction(gpio_to_desc(wdev->gpio_wdt_ping));
 	ret = devm_gpio_request_one(&client->dev, wdev->gpio_wdt_ping, 
 				GPIOF_OUT_INIT_LOW, "adv_wdt.wdt_ping");
 	if (ret < 0) {
