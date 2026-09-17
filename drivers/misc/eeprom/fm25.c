@@ -267,7 +267,7 @@ static int fm25_probe(struct spi_device *spi)
 		* fsl imx8 linux fucking kernel loading order
 		* for spi subsystem, we must set the defer mechism.
 		*/
-		err = PTR_ERR(-EPROBE_DEFER);
+		err = -EPROBE_DEFER;
 		goto out_err;
 	}
 
