@@ -1,6 +1,5 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
-#include <linux/gpio/consumer.h>
 #include <linux/of_platform.h>
 #include <linux/of_gpio.h>
 
@@ -8,7 +7,7 @@ static int gpio_export_probe(struct platform_device *pdev)
 {
 	char gpio_name[32]={0};
 	struct device_node *np = pdev->dev.of_node;
-	char *gpio_flag = NULL;
+	enum of_gpio_flags gpio_flag;	
 	u32 count, i;
 	int flags;
 	int export_gpio;
@@ -35,13 +34,7 @@ static int gpio_export_probe(struct platform_device *pdev)
 				gpio_flag  = gpio_prop[1];
 			}
 		}else {
-			export_gpio = of_get_named_gpio(np, gpio_name, 0);
-			flags = gpiod_get_direction(gpio_to_desc(export_gpio));
-			// 0 for output, 1 for input
-			if (flags == 0)
-				gpio_flag = 'o';
-			else if (flags == 1)
-				gpio_flag = NULL;
+			export_gpio = of_get_named_gpio_flags(np, gpio_name, 0, &gpio_flag);
 		}
 
 		if (gpio_is_valid(export_gpio)) {
@@ -58,7 +51,7 @@ static int gpio_export_probe(struct platform_device *pdev)
 			}
 
 			//export the gpio.
-			gpiod_export(gpio_to_desc(export_gpio), 1);
+			gpio_export(export_gpio, 1);
 		}else{
 			if (export_gpio == PTR_ERR(-EPROBE_DEFER)) {
 				return PTR_ERR(-EPROBE_DEFER);
