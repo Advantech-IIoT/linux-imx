@@ -458,6 +458,7 @@ static int panel_simple_unprepare(struct drm_panel *panel)
 	int ret;
 
 #ifdef CONFIG_ARCH_ADV
+	struct panel_simple *p = to_panel_simple(panel);
 	gpiod_set_value_cansleep(p->enable_gpio, 0);
 
 	if (p->desc->delay.unprepare)
@@ -500,6 +501,7 @@ static int panel_simple_prepare(struct drm_panel *panel)
 	int ret;
 
 #ifdef CONFIG_ARCH_ADV
+	struct panel_simple *p = to_panel_simple(panel);
 	unsigned int delay;
 
 	ret = regulator_enable(p->supply);
