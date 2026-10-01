@@ -1378,7 +1378,7 @@ static const struct attribute_group stmvl53lx_attr_group = {
 };
 
 static ssize_t stmvl53lx_calib_data_read(struct file *filp,
-	struct kobject *kobj, struct bin_attribute *attr,
+	struct kobject *kobj, const struct bin_attribute *attr,
 	char *buf, loff_t off, size_t count)
 {
 	struct device *dev = container_of(kobj, struct device, kobj);
@@ -1425,7 +1425,7 @@ error:
 }
 
 static ssize_t stmvl53lx_calib_data_write(struct file *filp,
-	struct kobject *kobj, struct bin_attribute *attr,
+	struct kobject *kobj, const struct bin_attribute *attr,
 	char *buf, loff_t off, size_t count)
 {
 	struct device *dev = container_of(kobj, struct device, kobj);
