@@ -88,10 +88,14 @@
 		gpio_counts = <4>;	//gpio counts
 		status = "okay";
 
-		gpio-0 = <84 1>;
-		gpio-1 = <85 1>;
-		gpio-2 = <86 1>;
-		gpio-3 = <0 1>;
+		gpio-0-gpios = <&gpio3 20 GPIO_ACTIVE_HIGH>;
+		gpio-1-gpios = <&gpio3 21 GPIO_ACTIVE_HIGH>;
+		gpio-2-gpios = <&gpio3 22 GPIO_ACTIVE_HIGH>;
+		gpio-3-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+
+		gpio-0-output;
+		gpio-1-output;
+		gpio-2-output;
 	};
 
 	/***************************
