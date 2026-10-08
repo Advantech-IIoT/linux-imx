@@ -308,11 +308,30 @@
 /* the real display controler.*/
 &lcdif {
 	status = "okay";
+	/* fix dsi probe with driver imx_sec_dsim_drv failed */
+	compatible = "fsl,imx8mm-lcdif";
+	clocks = <&clk IMX8MM_CLK_LCDIF_PIXEL>,
+		 <&clk IMX8MM_CLK_DISP_AXI_ROOT>,
+		 <&clk IMX8MM_CLK_DISP_APB_ROOT>;
+	clock-names = "pix", "disp-axi", "disp-apb";
+	assigned-clock-rate = <594000000>, <500000000>, <200000000>;
 };
 
 /* display data from lcdif.*/
 &mipi_dsi {
 	status = "okay";
+	/* fix dsi probe with driver imx_sec_dsim_drv failed */
+	#address-cells = <1>;
+	#size-cells = <0>;
+	clocks = <&clk IMX8MM_CLK_DSI_CORE>,
+		 <&clk IMX8MM_CLK_DSI_PHY_REF>,
+		 <&clk IMX8MM_CLK_DISP_APB_ROOT>;
+	clock-names = "cfg", "pll-ref", "apb-root";
+	assigned-clocks = <&clk IMX8MM_CLK_DSI_CORE>,
+			  <&clk IMX8MM_CLK_DSI_PHY_REF>;
+	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_266M>,
+				 <&clk IMX8MM_CLK_24M>;
+	assigned-clock-rates = <266000000>, <12000000>;
 
 	/*
 	* sec-dsi driver support the panel
