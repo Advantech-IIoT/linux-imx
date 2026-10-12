@@ -108,6 +108,14 @@
 		watchdog0 = &advwdt;
 		watchdog1 = &wdog1;
 	};
+
+	/************************
+	* display subsystem
+	************************/
+	display-subsystem {
+		compatible = "fsl,imx-display-subsystem";
+		ports = <&lcdif_disp0>;
+	};
 };
 
 /***********************************************************
@@ -314,7 +322,13 @@
 		 <&clk IMX8MM_CLK_DISP_AXI_ROOT>,
 		 <&clk IMX8MM_CLK_DISP_APB_ROOT>;
 	clock-names = "pix", "disp-axi", "disp-apb";
-	assigned-clock-rate = <594000000>, <500000000>, <200000000>;
+	assigned-clock-rates = <594000000>, <500000000>, <200000000>;
+
+	lcdif_disp0: port {
+		lcdif_to_dsim: endpoint {
+			remote-endpoint = <&dsim_from_lcdif>;
+		};
+	};
 };
 
 /* display data from lcdif.*/
@@ -332,6 +346,11 @@
 	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_266M>,
 				 <&clk IMX8MM_CLK_24M>;
 	assigned-clock-rates = <266000000>, <12000000>;
+
+	/* fix dsi probe with driver imx_sec_dsim_drv failed */
+	ports {
+		/delete-node/ port@1;
+	};
 
 	/*
 	* sec-dsi driver support the panel
