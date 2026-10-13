@@ -464,8 +464,6 @@ static int panel_simple_suspend(struct device *dev)
 
 static int panel_simple_unprepare(struct drm_panel *panel)
 {
-	int ret;
-
 #ifdef CONFIG_ARCH_ADV
 	struct panel_simple *p = to_panel_simple(panel);
 	gpiod_set_value_cansleep(p->enable_gpio, 0);
@@ -475,6 +473,7 @@ static int panel_simple_unprepare(struct drm_panel *panel)
 
 	regulator_disable(p->supply);
 #else
+	int ret;
 	pm_runtime_mark_last_busy(panel->dev);
 	ret = pm_runtime_put_autosuspend(panel->dev);
 	if (ret < 0)
@@ -6255,7 +6254,6 @@ static int panel_simple_dsi_probe(struct mipi_dsi_device *dsi)
 #ifdef CONFIG_ARCH_ADV
 	int len;
 	const void *data;
-	struct panel_simple *panel;
 #endif
 
 	panel = panel_simple_probe(&dsi->dev);
@@ -6287,7 +6285,7 @@ static int panel_simple_dsi_probe(struct mipi_dsi_device *dsi)
 		}
 	}
 
-    data = of_get_property(dsi->dev.of_node, "panel-exit-sequence", &len);
+	data = of_get_property(dsi->dev.of_node, "panel-exit-sequence", &len);
 	if (data) {
 		panel->off_cmds = devm_kzalloc(&dsi->dev,
 					       sizeof(*panel->off_cmds),
