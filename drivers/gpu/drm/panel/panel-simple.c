@@ -5964,7 +5964,7 @@ static const struct drm_display_mode inno_tdm07040ws_mode = {
 	.vsync_start = 600 + 20,
 	.vsync_end = 600 + 20 + 5,
 	.vtotal = 600 + 35,
-	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
 };
 
 static const struct panel_desc_dsi innolux_tdm07040ws = {
@@ -5983,6 +5983,7 @@ static const struct panel_desc_dsi innolux_tdm07040ws = {
 			.unprepare = 200,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
 	},
 	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
 	.format = MIPI_DSI_FMT_RGB888,
@@ -6018,6 +6019,7 @@ static const struct panel_desc_dsi innolux_g101ice = {
 			.unprepare = 10,	/* T3+T7 */
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
 	},
 	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
 	.format = MIPI_DSI_FMT_RGB888,
@@ -6035,7 +6037,7 @@ static const struct drm_display_mode inno_g156hce_mode = {
 	.vsync_start = 1080 + 35,
 	.vsync_end = 1080 + 35 + 5,
 	.vtotal = 1080 + 50,
-	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
 };
 
 static const struct panel_desc_dsi innolux_g156hce = {
@@ -6054,6 +6056,7 @@ static const struct panel_desc_dsi innolux_g156hce = {
 			.unprepare = 10,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
 	},
 	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
 	.format = MIPI_DSI_FMT_RGB888,
@@ -6070,7 +6073,7 @@ static const struct drm_display_mode inno_g156bge_mode = {
 	.vsync_start = 768 + 20,
 	.vsync_end = 768 + 20 + 8,
 	.vtotal = 768 + 38,
-	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
 };
 
 static const struct panel_desc_dsi innolux_g156bge = {
@@ -6089,6 +6092,7 @@ static const struct panel_desc_dsi innolux_g156bge = {
 			.unprepare = 10,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
 	},
 	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
 	.format = MIPI_DSI_FMT_RGB888,
@@ -6105,7 +6109,7 @@ static const struct drm_display_mode auo_g215han_mode = {
 	.vsync_start = 1080 + 20,
 	.vsync_end = 1080 + 20 + 10,
 	.vtotal = 1080 + 20 + 20 + 10,
-	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
 };
 
 static const struct panel_desc_dsi auo_g215han = {
@@ -6118,6 +6122,7 @@ static const struct panel_desc_dsi auo_g215han = {
 			.height = 268,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
 	},
 	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
 	.format = MIPI_DSI_FMT_RGB888,
@@ -6134,7 +6139,7 @@ static const struct drm_display_mode inno_g070ace_mode = {
 	.vsync_start = 480 + 2,
 	.vsync_end = 480 + 6 + 2,
 	.vtotal = 480 + 2 + 6 + 2,
-	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
 };
 
 static const struct panel_desc_dsi innolux_g070ace = {
@@ -6153,6 +6158,7 @@ static const struct panel_desc_dsi innolux_g070ace = {
 			.unprepare = 10,
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
 	},
 	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
 	.format = MIPI_DSI_FMT_RGB888,
@@ -6169,7 +6175,7 @@ static const struct drm_display_mode tianma_p0700wvf_mode = {
 	.vsync_start = 480 + 28,
 	.vsync_end = 480 + 28 + 10,
 	.vtotal = 480 + 28 + 10 + 10,   /* LVDS timing */
-	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PHSYNC,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
 };
 
 static const struct panel_desc_dsi tianma_p0700wvf = {
@@ -6188,6 +6194,7 @@ static const struct panel_desc_dsi tianma_p0700wvf = {
 			.unprepare = 10,	/* T3 */
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
 	},
 	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
 	.format = MIPI_DSI_FMT_RGB888,
