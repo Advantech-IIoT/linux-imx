@@ -204,10 +204,9 @@ static int panel_simple_dsi_parse_dcs_cmds(struct device *dev,
 					   const u8 *data, int blen,
 					   struct dsi_panel_cmds *pcmds)
 {
-	int len;
-	char *buf, *bp;
+	int len, i, cnt;
+	u8 *buf, *bp;
 	struct dsi_ctrl_hdr *dchdr;
-	int i, cnt;
 
 	if (!pcmds)
 		return -EINVAL;
@@ -220,12 +219,13 @@ static int panel_simple_dsi_parse_dcs_cmds(struct device *dev,
 	bp = buf;
 	len = blen;
 	cnt = 0;
-	while (len > sizeof(*dchdr)) {
+	while (len >= sizeof(*dchdr)) {
 		dchdr = (struct dsi_ctrl_hdr *)bp;
 
 		if (dchdr->dlen > len) {
-			dev_err(dev, "%s: error, len=%d", __func__,
-				dchdr->dlen);
+			dev_err(dev, "%s: error, dlen=%d len=%d\n",
+				__func__, dchdr->dlen, len);
+			kfree(buf);
 			return -EINVAL;
 		}
 
@@ -237,13 +237,13 @@ static int panel_simple_dsi_parse_dcs_cmds(struct device *dev,
 	}
 
 	if (len != 0) {
-		dev_err(dev, "%s: dcs_cmd=%x len=%d error!",
+		dev_err(dev, "%s: dcs_cmd=%x len=%d error!\n",
 			__func__, buf[0], blen);
 		kfree(buf);
 		return -EINVAL;
 	}
 
-	pcmds->cmds = kcalloc(cnt, sizeof(struct dsi_cmd_desc), GFP_KERNEL);
+	pcmds->cmds = devm_kcalloc(dev, cnt, sizeof(*pcmds->cmds), GFP_KERNEL);
 	if (!pcmds->cmds) {
 		kfree(buf);
 		return -ENOMEM;
@@ -254,15 +254,12 @@ static int panel_simple_dsi_parse_dcs_cmds(struct device *dev,
 	pcmds->blen = blen;
 
 	bp = buf;
-	len = blen;
 	for (i = 0; i < cnt; i++) {
 		dchdr = (struct dsi_ctrl_hdr *)bp;
-		len -= sizeof(*dchdr);
 		bp += sizeof(*dchdr);
 		pcmds->cmds[i].dchdr = *dchdr;
 		pcmds->cmds[i].payload = bp;
 		bp += dchdr->dlen;
-		len -= dchdr->dlen;
 	}
 
 	dev_info(dev, "%s: dcs_cmd=%x len=%d, cmd_cnt=%d\n", __func__,
@@ -276,7 +273,7 @@ static int panel_simple_dsi_send_cmds(struct panel_simple *panel,
 	struct mipi_dsi_device *dsi = panel->dsi;
 	int i, err;
 
-    //dev_err(panel->base.dev, "Warren panel_simple_dsi_send_cmds into  \n");
+	//dev_err(panel->base.dev, "Warren panel_simple_dsi_send_cmds into  \n");
 	if (!cmds)
 		return -EINVAL;
 
@@ -287,14 +284,14 @@ static int panel_simple_dsi_send_cmds(struct panel_simple *panel,
 		case MIPI_DSI_GENERIC_SHORT_WRITE_1_PARAM:
 		case MIPI_DSI_GENERIC_SHORT_WRITE_2_PARAM:
 		case MIPI_DSI_GENERIC_LONG_WRITE:
-		    //dev_err(panel->base.dev, "Warren mipi_dsi_generic_write \n");
+			//dev_err(panel->base.dev, "Warren mipi_dsi_generic_write \n");
 			err = mipi_dsi_generic_write(dsi, cmd->payload,
 						     cmd->dchdr.dlen);
 			break;
 		case MIPI_DSI_DCS_SHORT_WRITE:
 		case MIPI_DSI_DCS_SHORT_WRITE_PARAM:
 		case MIPI_DSI_DCS_LONG_WRITE:
-		    //dev_err(panel->base.dev, "Warren mipi_dsi_dcs_write_buffer \n");
+			//dev_err(panel->base.dev, "Warren mipi_dsi_dcs_write_buffer \n");
 			err = mipi_dsi_dcs_write_buffer(dsi, cmd->payload,
 							cmd->dchdr.dlen);
 			break;
@@ -303,7 +300,7 @@ static int panel_simple_dsi_send_cmds(struct panel_simple *panel,
 		}
 
 		if (err < 0)
-			dev_err(panel->base.dev, "Warren failed to write dcs cmd: %d\n",
+			dev_err(&dsi->dev, "Warren failed to write dcs cmd: %d\n",
 				err);
 
 		if (cmd->dchdr.wait)
@@ -442,6 +439,11 @@ static int panel_simple_disable(struct drm_panel *panel)
 {
 	struct panel_simple *p = to_panel_simple(panel);
 
+#ifdef CONFIG_ARCH_ADV
+	if (p->off_cmds)
+		panel_simple_dsi_send_cmds(p, p->off_cmds);
+#endif
+
 	if (p->desc->delay.disable)
 		msleep(p->desc->delay.disable);
 
@@ -539,16 +541,16 @@ static int panel_simple_enable(struct drm_panel *panel)
 	int err;
 	struct panel_simple *p = to_panel_simple(panel);
 
-	if (p->desc->delay.enable)
-		msleep(p->desc->delay.enable);
-
 #ifdef CONFIG_ARCH_ADV
 	if (p->on_cmds) {
 		err = panel_simple_dsi_send_cmds(p, p->on_cmds);
 		if (err)
-			dev_err(p->dev, "failed to send on cmds\n");
+			dev_err(panel->dev, "failed to send on cmds: %d\n", err);
 	}
 #endif
+
+	if (p->desc->delay.enable)
+		msleep(p->desc->delay.enable);
 
 	return 0;
 }
@@ -809,6 +811,8 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
 	int connector_type;
 	u32 bus_flags;
 	int err;
+
+	dev_info(dev, "%s: enter\n", __func__);
 
 	desc = panel_simple_get_desc(dev);
 	if (IS_ERR(desc))
