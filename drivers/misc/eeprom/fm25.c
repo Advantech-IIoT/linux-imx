@@ -283,7 +283,7 @@ static int fm25_probe(struct spi_device *spi)
 		chip->byte_len = 64 * 1024;
 		break;
 	case 0x24:
-		chip->byte_len = 1024 * 1024;
+		chip->byte_len = 128 * 1024;
 		break;
 	case 0x25:
 		chip->byte_len = 256 * 1024;
