@@ -6134,7 +6134,7 @@ static const struct panel_desc_dsi auo_g215han = {
 };
 
 static const struct drm_display_mode inno_g070ace_mode = {
-	.clock = 76200,
+	.clock = 25400,               /* DSI clock */
 	.hdisplay = 800,
 	.hsync_start = 800 + 20,
 	.hsync_end = 800 + 24 + 20,
