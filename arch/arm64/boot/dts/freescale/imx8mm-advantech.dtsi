@@ -53,7 +53,8 @@
 		linux,cma {
 			compatible = "shared-dma-pool";
 			reusable;
-			size = <0 0x28000000>;
+			/* set size 320 MB to avoid allocate failed */
+			size = <0 0x14000000>;
 			/* enlarge alloc-ranges to avoid allocate failed */
 			alloc-ranges = <0 0x80000000 0 0x80000000>;
 			linux,cma-default;
@@ -558,6 +559,12 @@
 
 &pgc_gpumix {
 	status = "disabled";
+};
+
+&imx8_gpu_ss {
+	/* fix #33490: GPU contiguous_mem from 0x8000000(128M) to 0x10000000(256M) */
+	/* GPU phys_baseaddr enlarge alloc range size to 3 GB */
+	reg = <0x0 0x40000000 0x0 0xC0000000>, <0x0 0x0 0x0 0x10000000>;
 };
 
 /*
